@@ -107,6 +107,8 @@ public class SexprStatement extends Statement
                      "div __lisp_a __lisp_a __lisp_b\n" +
                      "push __lisp_a ",res);
                 break;
+            default:
+                exec("call $"+op,res);
 
         }
         ArrayList<String>result=new ArrayList<>();
