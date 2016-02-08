@@ -24,6 +24,8 @@ public class SexprStatement extends Statement
         }
     }
 
+    public SexprStatement() {}
+
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
         ArrayList<String>res=new ArrayList<>();

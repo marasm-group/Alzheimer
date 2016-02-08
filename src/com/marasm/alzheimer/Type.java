@@ -17,4 +17,5 @@ public class Type
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         result.add(cmd + " ;");
     }
+    public String[]fields=null;
 }

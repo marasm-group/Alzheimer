@@ -27,4 +27,5 @@ public class Statement
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         result.add(cmd + " ;");
     }
+
 }

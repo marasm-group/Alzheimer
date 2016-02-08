@@ -1,8 +1,6 @@
 package com.marasm.alzheimer;
 
-import com.marasm.alzheimer.statements.AsmStatement;
-import com.marasm.alzheimer.statements.SexprStatement;
-import com.marasm.alzheimer.statements.VarStatement;
+import com.marasm.alzheimer.statements.*;
 
 import java.util.ArrayList;
 
@@ -12,6 +10,7 @@ import java.util.ArrayList;
 public class Compiler
 {
     public boolean globalScope=true;
+    public String returnType=null;
     public void compile(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
@@ -20,15 +19,20 @@ public class Compiler
             Token t=pop(tokens);
             if(t.isKeyword())
             {
+                boolean gs;
                 switch (t.value)
                 {
                     case "gvar":
+                        gs=globalScope;
                         globalScope=true;
                         cpuCode.addAll(new VarStatement(tokens).compile(this));
+                        globalScope=gs;
                         break;
                     case "var":
+                        gs = globalScope;
                         globalScope=false;
                         cpuCode.addAll(new VarStatement(tokens).compile(this));
+                        globalScope=gs;
                         break;
                     case "#:":
                         cpuCode.addAll(new SexprStatement(tokens).compile(this));
@@ -36,11 +40,21 @@ public class Compiler
                     case "asm:":
                         cpuCode.addAll(new AsmStatement(tokens).compile(this));
                         break;
+                    case "fun:":
+                        cpuCode.addAll(new FunStatement(tokens).compile(this));
+                        globalScope=false;
+                        break;
+                    case "end":
+                        exec("ret",cpuCode);
+                        globalScope=true;
+                        break;
+                    case "return":
+                        cpuCode.addAll(new ReturnStatement(tokens).compile(this));
+                        break;
                     default:
                         break;
                 }
             }
-            globalScope=false;
         }
         exec("halt 0 ; end of code generation",cpuCode);
         exec("#json\n" +
