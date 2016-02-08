@@ -14,6 +14,13 @@ public class Compiler
     public void compile(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
+        exec("#json\n" +
+                "{\n" +
+                "\"author\":\"SR3u\",\n" +
+                "\"dependencies\":[],\n" +
+                "\"compiler\":\"Alzheimer\"\n" +
+                "}\n" +
+                "#end",cpuCode);
         while (!tokens.isEmpty())
         {
             Token t=pop(tokens);
@@ -57,13 +64,6 @@ public class Compiler
             }
         }
         exec("halt 0 ; end of code generation",cpuCode);
-        exec("#json\n" +
-             "{\n" +
-             "\"author\":\"SR3u\",\n" +
-             "\"dependencies\":[],\n" +
-             "\"compiler\":\"Alzheimer\"\n" +
-             "}\n" +
-             "#end",cpuCode);
     }
     private void exec(String cmd,ArrayList<String>cpuCode)
     {

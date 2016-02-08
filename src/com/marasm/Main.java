@@ -11,9 +11,18 @@ public class Main {
 
     public static void main(String[] args)
     {
+        String srcPath;
+        if(args.length > 0)
+        {
+            srcPath = args[0];
+        }
+        else
+        {
+            srcPath = "/Users/vhq473/test.alz";
+        }
         try {
             Tokenizer T=new Tokenizer();
-            ArrayList<Token> tokens=T.tokenize(new FileReader("/Users/vhq473/test.alz"));
+            ArrayList<Token> tokens=T.tokenize(new FileReader(srcPath));
             Compiler C=new Compiler();
             C.compile(tokens);
         } catch (FileNotFoundException e) {
