@@ -21,7 +21,7 @@ public class Alzheimer
             "type",//custom TYPE declaration
             "end",// end of function/if/while clause
             ";",// end of statement
-            "#:",// https://en.wikipedia.org/wiki/S-expression
+            "$:",// https://en.wikipedia.org/wiki/S-expression
             "asm:"//assembler instruction
     ));
     static public Map<String,Type>types;
@@ -29,5 +29,5 @@ public class Alzheimer
         types=new HashMap<>();
         types.put(":number",new NumberType());
     }
-    static public boolean LogCPUInstructions=false;
+    static public boolean LogCPUInstructions=true;
 }

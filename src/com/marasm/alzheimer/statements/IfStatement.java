@@ -28,10 +28,30 @@ public class IfStatement extends SexprStatement
     static Stack<String> openedElses=new Stack<>();
     static Stack<String> closedElses=new Stack<>();
     public IfStatement(ArrayList<Token> _tokens) {
-        super(_tokens,":");
+        this(_tokens,":");
+    }
+    public IfStatement(ArrayList<Token> _tokens,String last)
+    {
+        super();
+        Token t=_tokens.remove(0);
+        tokens=new ArrayList<>();
+        for(int i=0;!t.value.equals(last);i++)
+        {
+            tokens.add(t);
+            if(_tokens.size()<=0){break;}
+            t=_tokens.remove(0);
+        }
+        tokens.add(t);
+        System.out.println(tokens);
     }
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
+        if(!tokens.get(tokens.size()-1).value.equals(":"))
+        {
+            Token tmp=tokens.get(tokens.size()-1);
+            throw new CompilerException(": expected",tmp.file,tmp.line);
+        }
+        tokens.remove(tokens.size()-1);
         ArrayList<String> res=new ArrayList<String>();
         exec("var "+varName+" ;"+"if "+statementString()+" :",res);
         res.addAll(super.compile(compiler));

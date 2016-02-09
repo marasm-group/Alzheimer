@@ -11,6 +11,21 @@ public class Compiler
 {
     public boolean globalScope=true;
     public String returnType=null;
+    String author=null;
+    public  Compiler(){this(null);}
+    public Compiler(String author)
+    {
+        this.author=author;
+        if(this.author==null)
+        {
+            this.author=System.getProperty("user.name");
+            if(this.author==null)
+            {
+                this.author="<Anonymous>";
+            }
+        }
+    }
+
     public void compile(ArrayList<Token> tokens) throws  Exception
     {
         try{
@@ -26,12 +41,12 @@ public class Compiler
     {
         ArrayList<String>cpuCode=new ArrayList<>();
         exec("#json\n" +
-                "{\n" +
-                "\"author\":\"SR3u\",\n" +
-                "\"dependencies\":[],\n" +
-                "\"compiler\":\"Alzheimer\"\n" +
-                "}\n" +
-                "#end",cpuCode);
+             "{\n" +
+             "\"author\":\""+author+"\",\n" +
+             "\"dependencies\":[],\n" +
+             "\"compiler\":\"Alzheimer\"\n" +
+             "}\n" +
+             "#end",cpuCode);
         while (!tokens.isEmpty())
         {
             Token t=pop(tokens);
@@ -52,7 +67,7 @@ public class Compiler
                         cpuCode.addAll(new VarStatement(tokens).compile(this));
                         globalScope=gs;
                         break;
-                    case "#:":
+                    case "$:":
                         cpuCode.addAll(new SexprStatement(tokens).compile(this));
                         break;
                     case "asm:":
