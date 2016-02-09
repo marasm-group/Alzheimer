@@ -14,10 +14,14 @@ public class SexprStatement extends Statement
 {
     public SexprStatement(ArrayList<Token> _tokens)
     {
+        this(_tokens,";");
+    }
+    public SexprStatement(ArrayList<Token> _tokens,String last)
+    {
         super();
         Token t=_tokens.remove(0);
         tokens=new ArrayList<>();
-        for(int i=0;!t.value.equals(";");i++)
+        for(int i=0;!t.value.equals(last);i++)
         {
             tokens.add(t);
             t=_tokens.remove(0);

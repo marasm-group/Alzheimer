@@ -17,12 +17,12 @@ public class Statement
     public ArrayList<String> compile(Compiler compiler) throws Exception {
         return new ArrayList<>();
     }
-    protected void exec(String cmd, Stack<String> result)
+    protected static void exec(String cmd, Stack<String> result)
     {
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         result.push(cmd+" ;");
     }
-    protected void exec(String cmd, ArrayList<String> result)
+    protected static void exec(String cmd, ArrayList<String> result)
     {
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         result.add(cmd + " ;");

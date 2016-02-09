@@ -15,7 +15,7 @@ public class Alzheimer
     static public ArrayList<String> keywords=new ArrayList<>(Arrays.asList(
             "gvar",//Global VARiable
             "var",//local VARiable
-            "if","while",
+            "if","else","endif","while",
             "fun:",//FUNction declaration
             "return",//RETURN from function/or program
             "type",//custom TYPE declaration

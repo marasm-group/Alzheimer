@@ -51,6 +51,14 @@ public class Compiler
                     case "return":
                         cpuCode.addAll(new ReturnStatement(tokens).compile(this));
                         break;
+                    case "if":
+                        cpuCode.addAll(new IfStatement(tokens).compile(this));
+                        break;
+                    case "else":
+                        cpuCode.addAll(IfStatement.Else(tokens,this));
+                        break;
+                    case "endif":
+                        cpuCode.addAll(IfStatement.EndIf(tokens,this));
                     default:
                         break;
                 }
