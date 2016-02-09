@@ -15,7 +15,7 @@ public class Alzheimer
     static public ArrayList<String> keywords=new ArrayList<>(Arrays.asList(
             "gvar",//Global VARiable
             "var",//local VARiable
-            "if","else","endif","while",
+            "if","else","endif","while","endwhile",
             "fun:",//FUNction declaration
             "return",//RETURN from function/or program
             "type",//custom TYPE declaration
@@ -29,5 +29,5 @@ public class Alzheimer
         types=new HashMap<>();
         types.put(":number",new NumberType());
     }
-    static public boolean LogCPUInstructions=true;
+    static public boolean LogCPUInstructions=false;
 }

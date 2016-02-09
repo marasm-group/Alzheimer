@@ -4,7 +4,6 @@ import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Compiler;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 /**
  * Created by vhq473 on 08.02.2016.
@@ -95,24 +94,28 @@ public class SexprStatement extends Statement
         {
             case "(":
                 break;
+            case "+":
             case "add":
                 exec("pop "+B+"\n" +
                      "pop "+A+"\n" +
                      "add "+A+" "+A+" "+B+"\n" +
                      "push "+A+" ", res);
                 break;
+            case "-":
             case "sub":
                 exec("pop "+B+"\n" +
                      "pop "+A+"\n" +
                      "sub "+A+" "+A+" "+B+"\n" +
                      "push "+A+" ",res);
                 break;
+            case "*":
             case "mul":
                 exec("pop "+B+"\n" +
                      "pop "+A+"\n" +
                      "mul "+A+" "+A+" "+B+"\n" +
                      "push "+A+" ",res);
                 break;
+            case "/":
             case "div":
                 exec("pop "+B+"\n" +
                      "pop "+A+"\n" +
@@ -134,7 +137,4 @@ public class SexprStatement extends Statement
         }
         return res;
     }
-    public String endGeneration=";; S-expression convenience stuff\n" +
-            "$more\n" +
-            "";
 }

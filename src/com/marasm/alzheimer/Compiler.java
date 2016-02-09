@@ -92,6 +92,13 @@ public class Compiler
                         break;
                     case "endif":
                         cpuCode.addAll(IfStatement.EndIf(tokens,this));
+                        break;
+                    case "while":
+                        cpuCode.addAll(new WhileStatement(tokens).compile(this));
+                        break;
+                    case "endwhile":
+                        cpuCode.addAll(WhileStatement.end(tokens,this));
+                        break;
                     default:
                         break;
                 }
