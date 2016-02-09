@@ -134,4 +134,7 @@ public class SexprStatement extends Statement
         }
         return res;
     }
+    public String endGeneration=";; S-expression convenience stuff\n" +
+            "$more\n" +
+            "";
 }

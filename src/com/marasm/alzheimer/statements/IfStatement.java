@@ -15,17 +15,17 @@ import java.util.Stack;
 public class IfStatement extends SexprStatement
 {
     static long IfTagsCount=0;
-    static long ElseTagsCount=0;
-    static long EndTagsCount=0;
 
     static String nextIfTag=null;
     static String nextElseTag=null;
     static String nextEndTag=null;
 
     static String tagPrefix="@__ALZ_";
-    static String varName="__ALZ_IFVAR";
+    static String varNamePrefix="__ALZ_IFVAR";
 
+    static Stack<String> varNames=new Stack<>();
     static Stack<String> openedElses=new Stack<>();
+    static Stack<String> openedEnd=new Stack<>();
     static Stack<String> closedElses=new Stack<>();
     public IfStatement(ArrayList<Token> _tokens) {
         this(_tokens,":");
@@ -52,18 +52,21 @@ public class IfStatement extends SexprStatement
         }
         tokens.remove(tokens.size()-1);
         ArrayList<String> res=new ArrayList<String>();
+        String varName=varNamePrefix+IfTagsCount;
         exec("var "+varName+" ;"+"if "+statementString()+" :",res);
         res.addAll(super.compile(compiler));
 
         exec("pop "+varName+" ;",res);
         nextIfTag=tagPrefix+"IF"+IfTagsCount;
-        IfTagsCount++;
         exec("jz "+varName+" "+nextIfTag,res);
-        nextElseTag=tagPrefix+"ELSE"+ElseTagsCount;
+        nextElseTag=tagPrefix+"ELSE"+IfTagsCount;
         exec("jnz "+varName+" "+nextElseTag,res);
-        openedElses.add(nextElseTag);
+        openedElses.push(nextElseTag);
+        nextEndTag=tagPrefix+"END"+IfTagsCount;
+        openedEnd.push(nextEndTag);
         exec(nextIfTag,res);
-        exec("delv "+varName,res);
+        IfTagsCount++;
+        varNames.push(varName);
         return res;
     }
     public static ArrayList<String> Else(ArrayList<Token>_tokens,Compiler compiler) throws Exception
@@ -71,8 +74,8 @@ public class IfStatement extends SexprStatement
         ArrayList<String> res=new ArrayList<>();
         if(openedElses.size()<=0){throw new CompilerException("else without if",_tokens.get(0).file,_tokens.get(0).line);}
         String elseTag=openedElses.pop();
+        exec("jmp "+openedEnd.peek(),res);
         exec(elseTag,res);
-        exec("delv "+varName,res);
         closedElses.push(elseTag);
         return  res;
     }
@@ -80,12 +83,16 @@ public class IfStatement extends SexprStatement
     public static ArrayList<String> EndIf(ArrayList<Token> _tokens, Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
-        if(openedElses.size()<=0){throw new CompilerException("endif without if",_tokens.get(0).file,_tokens.get(0).line);}
-        if(closedElses.size()>=0){exec(";endif",res);}
-        else
-        {
-            return Else(_tokens,compiler);
+        if(closedElses.size()<=0){
+            Else(_tokens,compiler);
+        }else {
+            if(openedElses.size()>0){openedElses.pop();}
         }
+        closedElses.pop();
+        if(openedEnd.size()<=0){throw new CompilerException("endif without if",_tokens.get(0).file,_tokens.get(0).line);}
+        exec("delv "+varNames.pop(),res);
+        exec(openedEnd.pop()+" ;endif",res);
+
         return  res;
     }
 }
