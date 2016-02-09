@@ -26,10 +26,10 @@ public class Compiler
         }
     }
 
-    public void compile(ArrayList<Token> tokens) throws  Exception
+    public ArrayList<String> compile(ArrayList<Token> tokens) throws  Exception
     {
         try{
-            compile_internal(tokens);
+            return compile_internal(tokens);
         }
         catch (CompilerException ce)
         {
@@ -37,7 +37,7 @@ public class Compiler
             throw new Exception("compilation error",ce);
         }
     }
-    private void compile_internal(ArrayList<Token> tokens) throws Exception
+    private ArrayList<String> compile_internal(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
         exec("#json\n" +
@@ -97,7 +97,10 @@ public class Compiler
                 }
             }
         }
+        exec("halt 0; additional utilities",cpuCode);
+        cpuCode.addAll(IfStatement.endGeneration());
         exec("halt 0 ; end of code generation",cpuCode);
+        return cpuCode;
     }
     private void exec(String cmd,ArrayList<String>cpuCode)
     {

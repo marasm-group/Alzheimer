@@ -84,7 +84,7 @@ public class FunStatement extends Statement
         while(params.size()>0)
         {
             String p=params.remove(0);
-            T.allocate(p);
+            res.addAll(T.allocate(p));
             if(T.fields==null)
             {
                 allParams.add(p);

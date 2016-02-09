@@ -58,9 +58,9 @@ public class IfStatement extends SexprStatement
 
         exec("pop "+varName+" ;",res);
         nextIfTag=tagPrefix+"IF"+IfTagsCount;
-        exec("jz "+varName+" "+nextIfTag,res);
+        exec("jnz "+varName+" "+nextIfTag,res);
         nextElseTag=tagPrefix+"ELSE"+IfTagsCount;
-        exec("jnz "+varName+" "+nextElseTag,res);
+        exec("jz "+varName+" "+nextElseTag,res);
         openedElses.push(nextElseTag);
         nextEndTag=tagPrefix+"END"+IfTagsCount;
         openedEnd.push(nextEndTag);
@@ -74,8 +74,8 @@ public class IfStatement extends SexprStatement
         ArrayList<String> res=new ArrayList<>();
         if(openedElses.size()<=0){throw new CompilerException("else without if",_tokens.get(0).file,_tokens.get(0).line);}
         String elseTag=openedElses.pop();
-        exec("jmp "+openedEnd.peek(),res);
         exec(elseTag,res);
+        exec("jmp "+openedEnd.peek(),res);
         closedElses.push(elseTag);
         return  res;
     }
@@ -84,15 +84,80 @@ public class IfStatement extends SexprStatement
     {
         ArrayList<String> res=new ArrayList<>();
         if(closedElses.size()<=0){
-            Else(_tokens,compiler);
+            res.addAll(Else(_tokens,compiler));
         }else {
             if(openedElses.size()>0){openedElses.pop();}
         }
         closedElses.pop();
         if(openedEnd.size()<=0){throw new CompilerException("endif without if",_tokens.get(0).file,_tokens.get(0).line);}
-        exec("delv "+varNames.pop(),res);
         exec(openedEnd.pop()+" ;endif",res);
+        exec("delv "+varNames.pop(),res);
 
         return  res;
     }
+    public static ArrayList<String> endGeneration()
+    {
+        ArrayList<String> res=new ArrayList<>();
+        exec(additionalStuff,res);
+        return res;
+    }
+    static String additionalStuff="" +
+            "halt -1 ; additional if stuff\n" +
+            "@__ALZ_ret_true\n" +
+            "push 1\n" +
+            "ret\n" +
+            "@__ALZ_ret_false\n" +
+            "push 0\n" +
+            "ret\n" +
+            "$more\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a a b\n" +
+            "jmz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "$less\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a b a\n" +
+            "jmz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "$moreeq\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a a b\n" +
+            "jmz a @__ALZ_ret_true\n" +
+            "jz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "$lesseq\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a b a\n" +
+            "jmz a @__ALZ_ret_true\n" +
+            "jz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "$eq\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a b a\n" +
+            "jz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "$neq\n" +
+            "var a\n" +
+            "var b\n" +
+            "pop b\n" +
+            "pop a\n" +
+            "sub a b a\n" +
+            "jnz a @__ALZ_ret_true\n" +
+            "jmp @__ALZ_ret_false\n" +
+            "halt -1\n";
 }
