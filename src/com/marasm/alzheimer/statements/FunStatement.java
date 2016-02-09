@@ -1,9 +1,6 @@
 package com.marasm.alzheimer.statements;
 
-import com.marasm.alzheimer.Alzheimer;
-import com.marasm.alzheimer.Statement;
-import com.marasm.alzheimer.Token;
-import com.marasm.alzheimer.Type;
+import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Types.NumberType;
 
 import java.util.ArrayList;
@@ -37,7 +34,8 @@ public class FunStatement extends Statement
         ArrayList<String>res=new ArrayList<>();
         exec("halt 0",res);
         exec("$"+tokens.remove(0).value,res);
-        if(!tokens.remove(0).value.equals("(")){throw new Exception("( expected!");}
+        Token tmp=tokens.remove(0);
+        if(!tmp.value.equals("(")){throw new CompilerException("( expected!",tmp.file,tmp.line);}
         String type=":number";
         ArrayList<String> params=new ArrayList<>();
         while (tokens.size()>0)
@@ -68,7 +66,7 @@ public class FunStatement extends Statement
             if(t.isType())
             {
                 compiler.returnType=t.value;
-            }else {throw  new Exception("Unexpected token '"+t+"'!");}
+            }else {throw  new CompilerException("Unexpected token '"+t+"'!",t.file,t.line);}
         }
         else
         {

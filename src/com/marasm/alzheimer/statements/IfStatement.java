@@ -1,6 +1,7 @@
 package com.marasm.alzheimer.statements;
 
 import com.marasm.alzheimer.Compiler;
+import com.marasm.alzheimer.CompilerException;
 import com.marasm.alzheimer.Statement;
 import com.marasm.alzheimer.Token;
 
@@ -49,7 +50,7 @@ public class IfStatement extends SexprStatement
     public static ArrayList<String> Else(ArrayList<Token>_tokens,Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
-        if(openedElses.size()<=0){throw new Exception("else without if");}
+        if(openedElses.size()<=0){throw new CompilerException("else without if",_tokens.get(0).file,_tokens.get(0).line);}
         String elseTag=openedElses.pop();
         exec(elseTag,res);
         exec("delv "+varName,res);
@@ -60,6 +61,7 @@ public class IfStatement extends SexprStatement
     public static ArrayList<String> EndIf(ArrayList<Token> _tokens, Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
+        if(openedElses.size()<=0){throw new CompilerException("endif without if",_tokens.get(0).file,_tokens.get(0).line);}
         if(closedElses.size()>=0){exec(";endif",res);}
         else
         {

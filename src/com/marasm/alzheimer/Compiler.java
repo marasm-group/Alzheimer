@@ -11,7 +11,18 @@ public class Compiler
 {
     public boolean globalScope=true;
     public String returnType=null;
-    public void compile(ArrayList<Token> tokens) throws Exception
+    public void compile(ArrayList<Token> tokens) throws  Exception
+    {
+        try{
+            compile_internal(tokens);
+        }
+        catch (CompilerException ce)
+        {
+            System.out.println("In file "+ce.file+" line "+ce.line+" "+ce.getLocalizedMessage());
+            throw new Exception("compilation error",ce);
+        }
+    }
+    private void compile_internal(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
         exec("#json\n" +

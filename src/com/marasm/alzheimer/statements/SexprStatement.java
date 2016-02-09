@@ -1,9 +1,8 @@
 package com.marasm.alzheimer.statements;
 
-import com.marasm.alzheimer.Alzheimer;
-import com.marasm.alzheimer.Statement;
-import com.marasm.alzheimer.Token;
+import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Compiler;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -12,6 +11,9 @@ import java.util.Stack;
  */
 public class SexprStatement extends Statement
 {
+    static String A="__ALZ_A";
+    static String B="__ALZ_A";
+
     public SexprStatement(ArrayList<Token> _tokens)
     {
         this(_tokens,";");
@@ -24,6 +26,7 @@ public class SexprStatement extends Statement
         for(int i=0;!t.value.equals(last);i++)
         {
             tokens.add(t);
+            if(_tokens.size()<=0){break;}
             t=_tokens.remove(0);
         }
     }
@@ -33,7 +36,7 @@ public class SexprStatement extends Statement
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
         ArrayList<String>res=new ArrayList<>();
-        exec("var __lisp_a \n"+"var __lisp_b ; "+statementString(),res);
+        exec("var "+A+" \n"+"var "+B+" ; "+statementString(),res);
         String eq=tokens.get(1).value;
         String result=tokens.get(0).value;
         if(eq.equals("=")){tokens.remove(0);tokens.remove(0);}
@@ -42,22 +45,25 @@ public class SexprStatement extends Statement
         {
             exec("pop "+result,res);
         }
-        exec("delv __lisp_a \n"+"delv __lisp_b ; end of statement",res);
+        exec("delv "+A+" \n"+"delv "+B+" ; end of statement",res);
         return res;
     }
 
     private ArrayList<String> expression(ArrayList<Token> tokens)throws Exception
     {
-        Stack<String> res=new Stack<>();
+        ArrayList<String> res=new ArrayList<>();
         String op=tokens.remove(0).value;
         if(!op.equals("("))
         {
-            if(!tokens.remove(0).value.equals("("))
+            Token tmp=tokens.remove(0);
+            if(!tmp.value.equals("("))
             {
-                throw new Exception("( expected");
+                throw new CompilerException("( expected",tmp.file,tmp.line);
             }
         }
-        if(!tokens.remove(tokens.size()-1).value.equals(")")){throw new Exception(") expected");}
+        Token tmp=tokens.remove(tokens.size()-1);
+        if(!tmp.value.equals(")"))
+            {throw new CompilerException(") expected",tmp.file,tmp.line);}
         ArrayList<String> args=new ArrayList<>();
         while (tokens.size()!=0)
         {
@@ -90,39 +96,34 @@ public class SexprStatement extends Statement
             case "(":
                 break;
             case "add":
-                exec("pop __lisp_b\n" +
-                     "pop __lisp_a\n" +
-                     "add __lisp_a __lisp_a __lisp_b\n" +
-                     "push __lisp_a ", res);
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "add "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ", res);
                 break;
             case "sub":
-                exec("pop __lisp_b\n" +
-                     "pop __lisp_a\n" +
-                     "sub __lisp_a __lisp_a __lisp_b\n" +
-                     "push __lisp_a ",res);
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "sub "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ",res);
                 break;
             case "mul":
-                exec("pop __lisp_b\n" +
-                     "pop __lisp_a\n" +
-                     "mul __lisp_a __lisp_a __lisp_b\n" +
-                     "push __lisp_a ",res);
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "mul "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ",res);
                 break;
             case "div":
-                exec("pop __lisp_b\n" +
-                     "pop __lisp_a\n" +
-                     "div __lisp_a __lisp_a __lisp_b\n" +
-                     "push __lisp_a ",res);
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "div "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ",res);
                 break;
             default:
                 exec("call $"+op,res);
 
         }
-        ArrayList<String>result=new ArrayList<>();
-        while(res.size()>0)
-        {
-            result.add(res.pop());
-        }
-        return result;
+        return res;
     }
     public String statementString()
     {

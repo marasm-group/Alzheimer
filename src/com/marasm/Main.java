@@ -3,6 +3,7 @@ package com.marasm;
 import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Compiler;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Main {
         }
         try {
             Tokenizer T=new Tokenizer();
-            ArrayList<Token> tokens=T.tokenize(new FileReader(srcPath));
+            ArrayList<Token> tokens=T.tokenize(new File(srcPath));
             Compiler C=new Compiler();
             C.compile(tokens);
         } catch (FileNotFoundException e) {

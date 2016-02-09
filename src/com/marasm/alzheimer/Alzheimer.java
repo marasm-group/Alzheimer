@@ -29,5 +29,5 @@ public class Alzheimer
         types=new HashMap<>();
         types.put(":number",new NumberType());
     }
-    static public boolean LogCPUInstructions=true;
+    static public boolean LogCPUInstructions=false;
 }

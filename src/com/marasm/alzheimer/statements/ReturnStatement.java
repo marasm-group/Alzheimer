@@ -17,6 +17,8 @@ public class ReturnStatement extends SexprStatement
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<String>();
+        if(compiler.globalScope)
+            {throw new CompilerException("return in global scope!",tokens.get(0).file,tokens.get(0).line);}
         if(compiler.returnType==null)
         {
             exec("ret ;",res);

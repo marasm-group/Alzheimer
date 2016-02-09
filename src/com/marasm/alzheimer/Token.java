@@ -10,7 +10,7 @@ import java.text.ParsePosition;
 public class Token
 {
     public String value="";
-    public int line=0;
+    public long line=0;
     public String file="<UNKNOWN>";
     public boolean isNumber()
     {
