@@ -12,7 +12,7 @@ import java.util.Stack;
 public class SexprStatement extends Statement
 {
     static String A="__ALZ_A";
-    static String B="__ALZ_A";
+    static String B="__ALZ_B";
 
     public SexprStatement(ArrayList<Token> _tokens)
     {

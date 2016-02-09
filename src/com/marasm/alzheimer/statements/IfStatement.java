@@ -42,7 +42,6 @@ public class IfStatement extends SexprStatement
             t=_tokens.remove(0);
         }
         tokens.add(t);
-        System.out.println(tokens);
     }
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
@@ -59,9 +58,9 @@ public class IfStatement extends SexprStatement
         exec("pop "+varName+" ;",res);
         nextIfTag=tagPrefix+"IF"+IfTagsCount;
         IfTagsCount++;
-        exec("jz "+nextIfTag,res);
+        exec("jz "+varName+" "+nextIfTag,res);
         nextElseTag=tagPrefix+"ELSE"+ElseTagsCount;
-        exec("jnz "+nextElseTag,res);
+        exec("jnz "+varName+" "+nextElseTag,res);
         openedElses.add(nextElseTag);
         exec(nextIfTag,res);
         exec("delv "+varName,res);
