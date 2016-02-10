@@ -34,7 +34,7 @@ public class Tokenizer
                         chrstr=Character.toString((char)chr);
                     }
                     chr=file.read();
-                    Character.toString((char)chr);
+                    chrstr=Character.toString((char)chr);
                 }
                 if(isWhitespace(chrstr))
                 {

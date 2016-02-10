@@ -20,6 +20,11 @@ var <var1>,<var2>,...<varn> :<type> # declare multiple variables of same type
 
 var b,c,d :number # declare 3 numeric variables
 
+# arrays are supported:
+# var <v1>[<n>],<v2>[<m>] :number # creates <v1> numeric array of <n> elements
+#                                 # and <v2> numeric array of <m> elements
+# to use i'th element of array <array>[i]
+
 # built-in types: 
 # :number
 
@@ -111,9 +116,14 @@ endwhile
 # functions without return type
 
 fun: foo(a b:number):number
-	$: add(a 1)
-	$: sub(b 1.5)
-	return add(a b)
+	$: a=(add(a 1));
+	$: b=(sub(b 1.5));
+	return add(a b);
+end
+fun: bar(a b c:number):number
+	$: a=(add(a c));
+	$: b=(sub(b 1.5));
+	return add(a b);
 end
 
 ###################################
@@ -122,6 +132,7 @@ end
 # asm: 
 # <assembly_code>
 # end
+# each line of assembly code should terminate with ;
 
 
 
