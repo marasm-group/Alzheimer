@@ -10,10 +10,11 @@ public class ArgParser {
     private String srcPath;
     private String dstPath;
     private String author;
+    private boolean dontCompile;
 
     private ArrayList<String> cmdArgs;
 
-    private final String[] keywords = {"--src", "--file", "--author"};
+    private final String[] keywords = {"--src", "--file", "--author", "--help"};
 
     public ArgParser(String[] args)
     {
@@ -22,6 +23,7 @@ public class ArgParser {
         {
             cmdArgs.add(tmp);
         }
+        dontCompile = false;
     }
 
     public String getSrcPath()
@@ -39,9 +41,13 @@ public class ArgParser {
         return author;
     }
 
+    public boolean getDontCompile()
+    {
+        return dontCompile;
+    }
+
     public void Parse()
     {
-        System.out.println(cmdArgs.toString());
         while(cmdArgs.size() > 0)
         {
             if(keywords[0].equals(cmdArgs.get(0)))
@@ -78,6 +84,11 @@ public class ArgParser {
                     return;
                 }
             }
+            else if(keywords[3].equals(cmdArgs.get(0)))
+            {
+                PrintHelp();
+                return;
+            }
             else
             {
                 BadArgs();
@@ -86,13 +97,33 @@ public class ArgParser {
             cmdArgs.remove(0);
             cmdArgs.remove(0);
         }
+        PrintInfo();
     }
 
     private void BadArgs()
     {
         System.out.println("Bad command line arguments");
+        PrintHelp();
+    }
+
+    private void PrintHelp()
+    {
+        PrintInfo();
+        System.out.println("Available arguments: ");
+        System.out.println("    --src <filename> - specify alzheimer source file location.");
+        System.out.println("    --file <filename> - specify mvm output file destination.");
+        System.out.println("    --author <name> - specify author name.");
+        System.out.println("    --help - print this help message");
         srcPath = null;
         dstPath = null;
         author = null;
+        dontCompile = true;
+    }
+
+    private void PrintInfo()
+    {
+        System.out.println("Alzheimer Language Compiler");
+        System.out.println("2015-2016(c) marasm-group");
+        System.out.println("More info at: http://github.com/marasm-group/Alzheimer");
     }
 }

@@ -20,6 +20,10 @@ public class Main {
         ArgParser parser = new ArgParser(args);
         parser.Parse();
 
+        if(parser.getDontCompile() == true)
+        {
+            return;
+        }
         if((srcPath = parser.getSrcPath()) == null)
         {
             srcPath = "/Users/vhq473/test.alz";
@@ -31,6 +35,7 @@ public class Main {
         author = parser.getAuthor();
 
         try {
+            System.out.println("Compiling alzheimer source " + srcPath);
             Tokenizer T=new Tokenizer();
             ArrayList<Token> tokens=T.tokenize(new File(srcPath));
             Compiler C=new Compiler(author);
@@ -41,6 +46,7 @@ public class Main {
                 outFile.write(cmd+"\n");
             }
             outFile.flush();
+            System.out.println("Created mvm executable file " + dstPath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
