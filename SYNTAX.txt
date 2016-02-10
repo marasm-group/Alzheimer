@@ -1,0 +1,129 @@
+####################
+# ALZHEIMER SYNTAX #
+####################
+
+############
+# comments #
+############
+
+# # starts a comment, end of line ends
+
+########################
+# variable declaration #
+########################
+
+var <varname> :<type>
+
+var a :number # declare numeric variable a
+
+var <var1>,<var2>,...<varn> :<type> # declare multiple variables of same type
+
+var b,c,d :number # declare 3 numeric variables
+
+# built-in types: 
+# :number
+
+# currently language supports only build-in types
+
+##############
+# statements #
+##############
+
+# statements are much like s-expressions
+# each statement starts with $: and ends with ;
+$: foo(a,bar(b,c)));
+# if you want to assign the result of statement 
+# you write <var>= after $: and put everything 
+# else (except ;) in brackets()
+$: a=(1);
+$: d=(foo(a bar(b c))));
+# there are some build-in functions:
+# add(a b) or +(a b) – addition
+# sub(a b) or -(a b) – subtraction
+# mul(a b) or *(a b) – multiplication
+# div(a b) or /(a b) – division
+# more(a b) returns 1 if a > b , 0 otherwise
+# moreeq(a b) returns 1 if a >= b, 0 otherwise
+# less(a b) returns 1 if a < b , 0 otherwise
+# lesseq(a b) returns 1 if a <= b, 0 otherwise
+# eq(a b) returns 1 if a == b , 0 otherwise
+# neq(a b) returns 1 if a != b, 0 otherwise
+
+##############
+# if - else  #
+##############
+
+# simplest if statement
+# if <condition_statement>:
+# <code>
+# endif
+# <condition_statement> should not start with $:
+# remember that <condition_statement> shoult return a number
+# also it's result will be checked for inequality with 0
+# and if it is not 0, the <code> before endif will be executed
+# (like in C and many other languages)
+# so, the same stuff in C
+
+# more complex if statement
+# if <condition_statement>:
+# <code>
+# else
+# <else_code>
+# endif
+# if <condition_statement> result is not 0, the <code> before else will be executed
+# otherwise, the <else_code> before endif will be executed.
+
+###############
+# while loop  #
+###############
+
+# while <condition_statement>:
+# <code>
+# endwhile
+# while <condition_statement> results is not 0
+# <code> before endwhile will be executed
+# for example:
+var a :number
+$: a=(10);
+while more(a 0):
+	$: a=(sub(a 1));# will be executed 10 times	
+endwhile
+# a will be 0
+
+########################
+# function declaration #
+########################
+
+# fun: <function>(<params>):<type>
+# <code>
+# end
+
+# type is return type of the function
+# some functions may not have any arguments
+# so, <params> are optional
+# also ,some of them do not return nothing
+# so, :<type> is also optional
+
+# return <statement> 
+# aborts function execution
+# and returns <statement> result
+# <statement> is not necessary for 
+# functions without return type
+
+fun: foo(a b:number):number
+	$: add(a 1)
+	$: sub(b 1.5)
+	return add(a b)
+end
+
+###################################
+# low level code (asm: statement) #
+###################################
+# asm: 
+# <assembly_code>
+# end
+
+
+
+
+

@@ -26,6 +26,16 @@ public class Tokenizer
             while(chr!=-1)
             {
                 String chrstr=Character.toString((char)chr);
+                if(chrstr.equals("#"))
+                {
+                    while(!chrstr.equals("\n"))
+                    {
+                        chr=file.read();
+                        chrstr=Character.toString((char)chr);
+                    }
+                    chr=file.read();
+                    Character.toString((char)chr);
+                }
                 if(isWhitespace(chrstr))
                 {
                     if(chrstr.equals("\n")){line++;}
