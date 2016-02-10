@@ -78,15 +78,15 @@ public class SexprStatement extends Statement
                 else
                 {
                     t=tokens.remove(0);
-                    //args.add(t.value);
-                    exec("push "+t.value,res);
+                    if(t.isString()){exec(t.pushString(),res);}
+                    else{exec("push "+t.value,res);}
                 }
             }
             else
             {
                 t=tokens.remove(0);
-                //args.add(t.value);
-                exec("push "+t.value,res);
+                if(t.isString()){exec(t.pushString(),res);}
+                else{exec("push "+t.value,res);}
             }
 
         }

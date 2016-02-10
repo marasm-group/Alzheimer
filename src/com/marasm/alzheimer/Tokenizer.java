@@ -13,8 +13,7 @@ import java.util.List;
 public class Tokenizer
 {
     ArrayList<Token> tokens;
-    public ArrayList<Token> tokenize(File _file) throws FileNotFoundException
-    {
+    public ArrayList<Token> tokenize(File _file) throws FileNotFoundException, CompilerException {
         FileReader file=new FileReader(_file);
         tokens=new ArrayList<>();
         String fileName=_file.getName();
@@ -26,6 +25,47 @@ public class Tokenizer
             while(chr!=-1)
             {
                 String chrstr=Character.toString((char)chr);
+                if(chrstr.equals("'"))
+                {
+                    if(t.value.length()>0) {
+                        t = addToken(t, fileName, line);
+                    }
+                        t.value+=chrstr;
+                        chr=file.read();
+                        chrstr=Character.toString((char)chr);
+                        while ((!chrstr.equals("'")||(t.value.endsWith("\\")))&&!(chr <0))
+                        {
+                            t.value+=chrstr;
+                            chr=file.read();
+                            chrstr=Character.toString((char)chr);
+                        }
+                        t.value+=chrstr;
+                        if(t.value.length()<3){throw  new CompilerException("short size for char constant",fileName,line);}
+                        t=addToken(t,fileName,line);
+                        chr=file.read();
+
+                    chrstr=Character.toString((char)chr);
+                }
+                if(chrstr.equals("\""))
+                {
+                    if(t.value.length()>0) {
+                        t = addToken(t, fileName, line);
+                    }
+                    t.value+=chrstr;
+                    chr=file.read();
+                    chrstr=Character.toString((char)chr);
+                    while ((!chrstr.equals("\"")||(t.value.endsWith("\\")))&&!(chr <0))
+                    {
+                        t.value+=chrstr;
+                        chr=file.read();
+                        chrstr=Character.toString((char)chr);
+                    }
+                    t.value+=chrstr;
+                    if(t.value.length()<3){throw  new CompilerException("short size for char constant",fileName,line);}
+                    t=addToken(t,fileName,line);
+                    chr=file.read();
+                    chrstr=Character.toString((char)chr);
+                }
                 if(chrstr.equals("#"))
                 {
                     while(!chrstr.equals("\n"))

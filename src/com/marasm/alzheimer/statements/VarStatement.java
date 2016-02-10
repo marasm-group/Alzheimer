@@ -17,11 +17,15 @@ public class VarStatement extends Statement
         super();
         Token t= new Token();
         tokens=new ArrayList<>();
-        for(int i=0;!t.isType();i++)
+        for(int i=0;!(t.isType()||t.isKeyword());i++)
         {
             t=_tokens.get(0);
             tokens.add(t);
             _tokens.remove(0);
+        }
+        if(tokens.get(tokens.size()-1).isKeyword())
+        {
+            tokens.remove(tokens.size()-1);
         }
     }
     @Override

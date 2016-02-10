@@ -98,6 +98,12 @@ public class Compiler
                     case "while":
                         cpuCode.addAll(new WhileStatement(tokens).compile(this));
                         break;
+                    case "break":
+                        cpuCode.addAll(WhileStatement.Break(tokens,this));
+                        break;
+                    case "continue":
+                        cpuCode.addAll(WhileStatement.Continue(tokens,this));
+                        break;
                     case "endwhile":
                         cpuCode.addAll(WhileStatement.end(tokens,this));
                         break;

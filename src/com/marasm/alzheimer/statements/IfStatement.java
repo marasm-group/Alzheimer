@@ -72,10 +72,12 @@ public class IfStatement extends SexprStatement
     public static ArrayList<String> Else(ArrayList<Token>_tokens,Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
-        if(openedElses.size()<=0){throw new CompilerException("else without if",_tokens.get(0).file,_tokens.get(0).line);}
+        if(openedElses.size()<=0){
+            throw new CompilerException("else without if",_tokens.get(0).file,_tokens.get(0).line);
+        }
         String elseTag=openedElses.pop();
-        exec(elseTag,res);
         exec("jmp "+openedEnd.peek(),res);
+        exec(elseTag,res);
         closedElses.push(elseTag);
         return  res;
     }
@@ -83,10 +85,8 @@ public class IfStatement extends SexprStatement
     public static ArrayList<String> EndIf(ArrayList<Token> _tokens, Compiler compiler) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
-        if(closedElses.size()<=0){
-            res.addAll(Else(_tokens,compiler));
-        }else {
-            if(openedElses.size()>0){openedElses.pop();}
+        if(closedElses.size()<=0) {
+            res.addAll(Else(_tokens, compiler));
         }
         closedElses.pop();
         if(openedEnd.size()<=0){throw new CompilerException("endif without if",_tokens.get(0).file,_tokens.get(0).line);}

@@ -18,6 +18,7 @@ public class WhileStatement extends SexprStatement
     static long whileTagsCount =0;
     static Stack<String>endWhiles=new Stack<>();
     static Stack<String>whiles=new Stack<>();
+    static Stack<String>variables=new Stack<>();
 
     public WhileStatement(ArrayList<Token> _tokens)
     {
@@ -47,6 +48,7 @@ public class WhileStatement extends SexprStatement
         ArrayList<String> res=new  ArrayList<String>();
         String varName=varNamePrefix+ whileTagsCount;
         exec("var "+varName+" ;"+"while "+statementString()+" :",res);
+        variables.push(varName);
         String wTag=wTagPrefix+ whileTagsCount;
         exec(wTag,res);
         res.addAll(super.compile(compiler));
@@ -66,6 +68,23 @@ public class WhileStatement extends SexprStatement
         ArrayList<String> res=new  ArrayList<String>();
         exec("jmp "+whiles.pop(),res);
         exec(endWhiles.pop(),res);
+        exec("delv "+variables.pop(),res);
+        return res;
+    }
+    public static ArrayList<String> Break(ArrayList<Token> _tokens, Compiler compiler) throws Exception
+    {
+        if(endWhiles.size()<=0)
+            {throw  new CompilerException("break without while",_tokens.get(0).file,_tokens.get(0).line);}
+        ArrayList<String> res=new  ArrayList<String>();
+        exec("jmp "+endWhiles.peek(),res);
+        return res;
+    }
+    public static ArrayList<String> Continue(ArrayList<Token> _tokens, Compiler compiler) throws Exception
+    {
+        if(endWhiles.size()<=0)
+        {throw  new CompilerException("continue without while",_tokens.get(0).file,_tokens.get(0).line);}
+        ArrayList<String> res=new  ArrayList<String>();
+        exec("jmp "+whiles.peek(),res);
         return res;
     }
 }
