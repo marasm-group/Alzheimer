@@ -15,26 +15,25 @@ public class Main {
     {
         String srcPath;
         String dstPath;
-        if(args.length > 0)
-        {
-            srcPath = args[0];
-        }
-        else
+        String author;
+
+        ArgParser parser = new ArgParser(args);
+        parser.Parse();
+
+        if((srcPath = parser.getSrcPath()) == null)
         {
             srcPath = "/Users/vhq473/test.alz";
         }
-        if(args.length > 1)
-        {
-            dstPath = args[1];
-        }
-        else
+        if((dstPath = parser.getDstPath()) == null)
         {
             dstPath = "/Users/vhq473/test.marasm";
         }
+        author = parser.getAuthor();
+
         try {
             Tokenizer T=new Tokenizer();
             ArrayList<Token> tokens=T.tokenize(new File(srcPath));
-            Compiler C=new Compiler();
+            Compiler C=new Compiler(author);
             ArrayList<String> cpuCode=C.compile(tokens);
             FileWriter outFile=new FileWriter(dstPath);
             for (String cmd:cpuCode)
