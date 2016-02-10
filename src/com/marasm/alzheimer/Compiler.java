@@ -44,9 +44,11 @@ public class Compiler
              "{\n" +
              "\"author\":\""+author+"\",\n" +
              "\"dependencies\":[],\n" +
-             "\"compiler\":\"Alzheimer\"\n" +
+             "\"compiler\":\"Alzheimer\",\n" +
+             "\"init\":\"$__ALZ_INIT\"\n" +
              "}\n" +
              "#end",cpuCode);
+        exec(";;; Alzheimer generated code ;;;",cpuCode);
         while (!tokens.isEmpty())
         {
             Token t=pop(tokens);
@@ -105,6 +107,12 @@ public class Compiler
             }
         }
         exec("halt 0; additional utilities",cpuCode);
+        exec("$__ALZ_INIT ; alzheimer initialization",cpuCode);
+        exec("gvar True",cpuCode);
+        exec("gvar False",cpuCode);
+        exec("mov True 1",cpuCode);
+        exec("mov False 0",cpuCode);
+        exec("ret",cpuCode);
         cpuCode.addAll(IfStatement.endGeneration());
         exec("halt 0 ; end of code generation",cpuCode);
         return cpuCode;

@@ -159,5 +159,5 @@ public class IfStatement extends SexprStatement
             "sub a b a\n" +
             "jnz a @__ALZ_ret_true\n" +
             "jmp @__ALZ_ret_false\n" +
-            "halt -1\n";
+            "halt -1";
 }

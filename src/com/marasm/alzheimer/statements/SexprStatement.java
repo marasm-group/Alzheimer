@@ -35,7 +35,7 @@ public class SexprStatement extends Statement
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
         ArrayList<String>res=new ArrayList<>();
-        exec("var "+A+" \n"+"var "+B+" ; "+statementString(),res);
+        exec("var "+A+" ; "+statementString()+" \n"+"var "+B,res);
         String eq=tokens.get(1).value;
         String result=tokens.get(0).value;
         if(eq.equals("=")){tokens.remove(0);tokens.remove(0);}
@@ -120,6 +120,18 @@ public class SexprStatement extends Statement
                 exec("pop "+B+"\n" +
                      "pop "+A+"\n" +
                      "div "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ",res);
+                break;
+            case "floor":
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "floor "+A+" "+A+" "+B+"\n" +
+                     "push "+A+" ",res);
+                break;
+            case "ceil":
+                exec("pop "+B+"\n" +
+                     "pop "+A+"\n" +
+                     "ceil "+A+" "+A+" "+B+"\n" +
                      "push "+A+" ",res);
                 break;
             default:
