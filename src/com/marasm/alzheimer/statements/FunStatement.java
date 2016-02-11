@@ -4,6 +4,7 @@ import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Types.NumberType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -33,6 +34,8 @@ public class FunStatement extends Statement
     public ArrayList<String> compile(com.marasm.alzheimer.Compiler compiler) throws Exception
     {
         Alzheimer.variablesStack.push(Alzheimer.variables);
+        Alzheimer.variables=new HashMap<>();
+        Alzheimer.variables.putAll(Alzheimer.globalVariables);
         ArrayList<String>res=new ArrayList<>();
         exec("halt 0",res);
         exec("$"+tokens.remove(0).value,res);

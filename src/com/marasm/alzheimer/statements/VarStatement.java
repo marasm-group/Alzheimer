@@ -4,6 +4,8 @@ import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Compiler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vhq473 on 08.02.2016.
@@ -44,7 +46,10 @@ public class VarStatement extends Statement
             var.type=T;
             var.isArray=isArray(v);
             var.name=v;
-            if(compiler.globalScope){res.addAll(T.gallocate(v));}
+            if(compiler.globalScope){
+                res.addAll(T.gallocate(v));
+                Alzheimer.globalVariables.put(var.nameWithoutIndex(),var);
+            }
             else{res.addAll(T.allocate(v));}
             Alzheimer.variables.put(var.nameWithoutIndex(),var);
         }

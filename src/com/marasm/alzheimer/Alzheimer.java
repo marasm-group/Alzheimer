@@ -29,5 +29,6 @@ public class Alzheimer
     static public boolean LogCPUInstructions=false;
 
     static public Map<String,Variable> variables=new HashMap<>();
+    static public Map<String,Variable> globalVariables=new HashMap<>();
     static public Stack<Map<String,Variable>> variablesStack=new Stack<>();
 }

@@ -34,6 +34,10 @@ public class Token
     {
         return Alzheimer.keywords.contains(value);
     }
+    public boolean isCharacter()
+    {
+        return value.length()>1 && value.startsWith("\'") && value.endsWith("\'");
+    }
     public boolean isString()
     {
         return value.length()>1 && value.startsWith("\"") && value.endsWith("\"");
@@ -72,5 +76,9 @@ public class Token
         int idx = value.indexOf("[");
         if (idx== -1){return value;}
         return value.substring(0,idx);
+    }
+    public boolean isArray()
+    {
+        return value.contains("[")&&value.contains("]");
     }
 }

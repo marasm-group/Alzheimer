@@ -98,14 +98,19 @@ public class SexprStatement extends Statement
                     if(t.isString()){exec(t.pushString(),res);}
                     else{
                         Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
-                        if(v.isArray)
-                        {
-                            for(int i=0;i<v.arraySize();i++)
-                            {
-                                res.addAll(v.type.push(v.nameWithoutIndex()+"["+i+"]"));
+                        if(v==null){
+                            if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
+                                throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
+                            exec("push "+t.value+";",res);
+                        }else {
+                            if (v.isArray && !t.isArray()) {
+                                for (int i = 0; i < v.arraySize(); i++) {
+                                    res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
+                                }
+                            } else {
+                                res.addAll(v.type.push(t.value));
                             }
                         }
-                        else{res.addAll(v.type.push(t.value));}
                     }
                 }
             }
@@ -117,9 +122,11 @@ public class SexprStatement extends Statement
                     Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
                     if(v==null)
                     {
+                        if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
+                            throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
                         exec("push "+t.value+";",res);
                     }else {
-                        if (v.isArray) {
+                        if (v.isArray && !t.isArray()) {
                             for (int i = 0; i < v.arraySize(); i++) {
                                 res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
                             }
