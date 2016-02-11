@@ -102,7 +102,7 @@ public class FunStatement extends Statement
             var.type=T;
             var.isArray=VarStatement.isArray(p);
             var.name=p;
-            Alzheimer.variables.put(p,var);
+            Alzheimer.variables.put(var.nameWithoutIndex(),var);
             allParams.push(var);
         }
     }

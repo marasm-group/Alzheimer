@@ -46,7 +46,8 @@ public class SexprStatement extends Statement
             if(v==null)
             {
                 v=Alzheimer.variables.get(result.valueWithoutIndex());
-                if(v==null){throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
+                if(v==null){
+                    throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
                 res.addAll(v.type.pop(result.value));
             }
             else
