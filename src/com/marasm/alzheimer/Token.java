@@ -67,4 +67,10 @@ public class Token
         }
         return res;
     }
+    public String valueWithoutIndex()
+    {
+        int idx = value.indexOf("[");
+        if (idx== -1){return value;}
+        return value.substring(0,idx);
+    }
 }

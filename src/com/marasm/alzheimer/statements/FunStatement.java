@@ -4,6 +4,7 @@ import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Types.NumberType;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * Created by vhq473 on 08.02.2016.
@@ -28,9 +29,10 @@ public class FunStatement extends Statement
             _tokens.remove(0);
         }
     }
-    ArrayList<String> allParams=new ArrayList<>();
+    Stack<Variable> allParams=new Stack<>();
     public ArrayList<String> compile(com.marasm.alzheimer.Compiler compiler) throws Exception
     {
+        Alzheimer.variablesStack.push(Alzheimer.variables);
         ArrayList<String>res=new ArrayList<>();
         exec("halt 0",res);
         exec("$"+tokens.remove(0).value,res);
@@ -72,9 +74,17 @@ public class FunStatement extends Statement
         {
             compiler.returnType=null;
         }
-        for (int i=allParams.size()-1;i>=0;i--)
+        while(allParams.size()>0)
         {
-            exec("pop "+allParams.get(i),res);
+            Variable v=allParams.pop();
+            if(v.isArray)
+            {
+                for(int i=v.arraySize()-1;i>=0;i--)
+                {
+                    res.addAll(v.type.pop(v.nameWithoutIndex()+"["+i+"]"));
+                }
+            }
+            else{res.addAll(v.type.pop(v.name));}
         }
         return res;
     }
@@ -85,17 +95,12 @@ public class FunStatement extends Statement
         {
             String p=params.remove(0);
             res.addAll(T.allocate(p));
-            if(T.fields==null)
-            {
-                allParams.add(p);
-            }
-            else
-            {
-                for(String field:T.fields)
-                {
-                    allParams.add(p+"."+field);
-                }
-            }
+            Variable var=new Variable();
+            var.type=T;
+            var.isArray=VarStatement.isArray(p);
+            var.name=p;
+            Alzheimer.variables.put(p,var);
+            allParams.push(var);
         }
     }
 }

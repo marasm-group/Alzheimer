@@ -37,12 +37,29 @@ public class SexprStatement extends Statement
         ArrayList<String>res=new ArrayList<>();
         exec("var "+A+" ; "+statementString()+" \n"+"var "+B,res);
         String eq=tokens.get(1).value;
-        String result=tokens.get(0).value;
+        Token result=tokens.get(0);
         if(eq.equals("=")){tokens.remove(0);tokens.remove(0);}
         res.addAll(expression(tokens));
         if(eq.equals("="))
         {
-            exec("pop "+result,res);
+            Variable v=Alzheimer.variables.get(result.value);
+            if(v==null)
+            {
+                v=Alzheimer.variables.get(result.valueWithoutIndex());
+                if(v==null){throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
+                res.addAll(v.type.pop(result.value));
+            }
+            else
+            {
+                if(v.isArray)
+                {
+                    for(int i=v.arraySize()-1;i>=0;i--)
+                    {
+                        res.addAll(v.type.pop(v.nameWithoutIndex()+"["+i+"]"));
+                    }
+                }
+                else{res.addAll(v.type.pop(result.value));}
+            }
         }
         exec("delv "+A+" \n"+"delv "+B+" ; end of statement",res);
         return res;
@@ -79,14 +96,38 @@ public class SexprStatement extends Statement
                 {
                     t=tokens.remove(0);
                     if(t.isString()){exec(t.pushString(),res);}
-                    else{exec("push "+t.value,res);}
+                    else{
+                        Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
+                        if(v.isArray)
+                        {
+                            for(int i=0;i<v.arraySize();i++)
+                            {
+                                res.addAll(v.type.push(v.nameWithoutIndex()+"["+i+"]"));
+                            }
+                        }
+                        else{res.addAll(v.type.push(t.value));}
+                    }
                 }
             }
             else
             {
                 t=tokens.remove(0);
                 if(t.isString()){exec(t.pushString(),res);}
-                else{exec("push "+t.value,res);}
+                else{
+                    Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
+                    if(v==null)
+                    {
+                        exec("push "+t.value+";",res);
+                    }else {
+                        if (v.isArray) {
+                            for (int i = 0; i < v.arraySize(); i++) {
+                                res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
+                            }
+                        } else {
+                            res.addAll(v.type.push(t.value));
+                        }
+                    }
+                }
             }
 
         }

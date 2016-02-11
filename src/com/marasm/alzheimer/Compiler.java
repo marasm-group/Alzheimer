@@ -81,6 +81,9 @@ public class Compiler
                         break;
                     case "end":
                         exec("ret",cpuCode);
+                        if(Alzheimer.variablesStack.size()<=0){
+                            throw new CompilerException("end without fun:",t.file,t.line);}
+                        Alzheimer.variables=Alzheimer.variablesStack.pop();
                         globalScope=true;
                         break;
                     case "return":

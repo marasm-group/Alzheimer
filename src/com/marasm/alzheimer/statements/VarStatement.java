@@ -40,9 +40,19 @@ public class VarStatement extends Statement
         Type T= Alzheimer.types.get(this.type);
         for (String v:variables)
         {
+            Variable var=new Variable();
+            var.type=T;
+            var.isArray=isArray(v);
+            var.name=v;
             if(compiler.globalScope){res.addAll(T.gallocate(v));}
             else{res.addAll(T.allocate(v));}
+            Alzheimer.variables.put(var.nameWithoutIndex(),var);
         }
         return res;
+    }
+
+    public static boolean isArray(String v)
+    {
+        return (v.contains("[")&&v.contains("]"));
     }
 }

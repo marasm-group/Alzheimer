@@ -11,6 +11,8 @@ public class Type
     public ArrayList<String> deallocate(String name){return new ArrayList<>();}
     public ArrayList<String> gallocate(String name){return new ArrayList<>();}
     public ArrayList<String> gdeallocate(String name){return new ArrayList<>();}
+    public ArrayList<String> push(String name){return new ArrayList<>();}
+    public ArrayList<String> pop(String name){return new ArrayList<>();}
 
     protected void exec(String cmd, ArrayList<String> result)
     {

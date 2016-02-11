@@ -34,5 +34,17 @@ public class NumberType extends Type
         exec("delg "+name+" ;",res);
         return res;
     }
+    public ArrayList<String> push(String name)
+    {
+        ArrayList<String> res=new ArrayList<>();
+        exec("push "+name+" ;",res);
+        return res;
+    }
+    public ArrayList<String> pop(String name)
+    {
+        ArrayList<String> res=new ArrayList<>();
+        exec("pop "+name+" ;",res);
+        return res;
+    }
 }
 
