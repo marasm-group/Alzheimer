@@ -78,9 +78,6 @@ public class SexprStatement extends Statement
                 throw new CompilerException("( expected",tmp.file,tmp.line);
             }
         }
-        Token tmp=tokens.remove(tokens.size()-1);
-        if(!tmp.value.equals(")"))
-            {throw new CompilerException(") expected",tmp.file,tmp.line);}
         ArrayList<String> args=new ArrayList<>();
         while (tokens.size()!=0)
         {
@@ -96,6 +93,10 @@ public class SexprStatement extends Statement
                 else
                 {
                     t=tokens.remove(0);
+                    if(t.value.equals(")"))
+                    {
+                        break;
+                    }
                     if(t.isString()){exec(t.pushString(),res);}
                     else{
                         Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
@@ -118,6 +119,7 @@ public class SexprStatement extends Statement
             else
             {
                 t=tokens.remove(0);
+                if(t.value.equals(")")){break;}
                 if(t.isString()){exec(t.pushString(),res);}
                 else{
                     Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
