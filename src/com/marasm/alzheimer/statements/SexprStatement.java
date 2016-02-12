@@ -198,6 +198,6 @@ public class SexprStatement extends Statement
         {
             res+=t.value+" ";
         }
-        return res;
+        return res+";";
     }
 }
