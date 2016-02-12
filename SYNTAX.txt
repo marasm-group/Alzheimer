@@ -95,6 +95,9 @@ while more(a 0):
 endwhile
 # a will be 0
 
+# break statement aborts loop execution immediatelly
+# continue statement aborts current loop iteration jumping it to the next one
+
 ########################
 # function declaration #
 ########################
@@ -125,6 +128,13 @@ fun: bar(a b c:number):number
 	$: b=(sub(b 1.5));
 	return add(a b);
 end
+
+############
+# imports  #
+############
+# import "<marasm_module1>" "<marasm_module2>" ... "<marasm_modulen>" ;
+# add <marasm_module1> <marasm_module2> ... <marasm_modulen> as dependencies for your program
+import "conio" "common" ;
 
 ###################################
 # low level code (asm: statement) #
