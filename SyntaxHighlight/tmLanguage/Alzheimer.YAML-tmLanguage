@@ -1,0 +1,36 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Alzheimer
+scopeName: source.alzheimer
+fileTypes: ["alz","alzheimer"]
+uuid: e67d99a0-6c87-49b3-a8a2-d0404f93cbe0
+
+patterns:
+- match: \b([0-9,\.]+)\b
+  name: constant.numeric.dec
+- name: entity.name.function
+  match: ([a-zA-Z0-9\.\_]+\()
+- match: \b(if|else|endif|while|endwhile|break|continue|return|type|end|import)\b
+  name: keyword.alzheimer
+- match: (\$\:|fun:|asm:)
+  name: keyword.alzheimer.funasms
+- match: ([\:]\b.+?\b)
+  name: keyword.type  
+- match: (\;|\:)
+  name: keyword.alzheimer.separators
+- match: \b(trace|log|print)\b
+  name: constant.numeric.line-number.find-in-files
+- match: \b(var|gvar)\b
+  name: variable.parameter
+- match: (\#.*$)
+  name: comment.line
+- name: string.character
+  begin: \'
+  end: \'
+- name: string
+  begin: \"
+  end: \"
+- name: storage.type.tag
+  match: (\@[^\s]+)  
+  
+...
