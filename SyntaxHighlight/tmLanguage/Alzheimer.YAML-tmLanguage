@@ -9,7 +9,7 @@ patterns:
 - match: \b([0-9,\.]+)\b
   name: constant.numeric.dec
 - name: entity.name.function
-  match: ([\S]+(?=\())
+  match: ([^(\s]\S+?(?=\())
 - match: \b(if|else|endif|while|endwhile|break|continue|return|type|end|import)\b
   name: keyword.alzheimer
 - match: (\$\:|fun:|asm:)

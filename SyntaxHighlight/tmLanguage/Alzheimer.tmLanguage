@@ -19,7 +19,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>([\S]+(?=\())</string>
+			<string>([^(\s]\S+?(?=\())</string>
 			<key>name</key>
 			<string>entity.name.function</string>
 		</dict>
