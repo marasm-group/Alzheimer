@@ -13,6 +13,7 @@ public class Compiler
     public String returnType=null;
     String author=null;
     public  Compiler(){this(null);}
+    public ArrayList<Token> dependencies=new ArrayList<>();
     public Compiler(String author)
     {
         this.author=author;
@@ -40,14 +41,6 @@ public class Compiler
     private ArrayList<String> compile_internal(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
-        exec("#json\n" +
-             "{\n" +
-             "\"author\":\""+author+"\",\n" +
-             "\"dependencies\":[],\n" +
-             "\"compiler\":\"Alzheimer\",\n" +
-             "\"init\":\"$__ALZ_INIT\"\n" +
-             "}\n" +
-             "#end",cpuCode);
         exec(";;; Alzheimer generated code ;;;",cpuCode);
         while (!tokens.isEmpty())
         {
@@ -57,6 +50,9 @@ public class Compiler
                 boolean gs;
                 switch (t.value)
                 {
+                    case "import":
+                        cpuCode.addAll(new ImportStatement(tokens).compile(this));
+                        break;
                     case "gvar":
                         gs=globalScope;
                         globalScope=true;
@@ -115,6 +111,14 @@ public class Compiler
                 }
             }
         }
+        exec_begin("#json\n" +
+                   "{\n" +
+                   "\"author\":\""+author+"\",\n" +
+                   "\"dependencies\":["+dependenciesStr()+"],\n" +
+                   "\"compiler\":\"Alzheimer\",\n" +
+                   "\"init\":\"$__ALZ_INIT\"\n" +
+                   "}\n" +
+                   "#end",cpuCode);
         exec("halt 0; additional utilities",cpuCode);
         exec("$__ALZ_INIT ; alzheimer initialization",cpuCode);
         exec("gvar True",cpuCode);
@@ -130,6 +134,28 @@ public class Compiler
     {
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         cpuCode.add(cmd);
+    }
+    private void exec_begin(String cmd,ArrayList<String>cpuCode)
+    {
+        if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
+        ArrayList<String>res=new ArrayList<>();
+        res.add(cmd);
+        res.addAll(cpuCode);
+        cpuCode.clear();
+        cpuCode.addAll(res);
+    }
+    private String dependenciesStr()throws Exception
+    {
+        String res="";
+        for(int i=0;i<dependencies.size();i++)
+        {
+            Token d=dependencies.get(i);
+            if(!d.isString()){
+                throw new CompilerException("String expected!",d.file,d.line);}
+            res+=d.value;
+            if(i<dependencies.size()-1){res+=",";}
+        }
+        return res;
     }
     private Token pop(ArrayList<Token> tokens)
     {
