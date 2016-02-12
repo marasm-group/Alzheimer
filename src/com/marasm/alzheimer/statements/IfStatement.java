@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Stack;
 
 /**
- * Created by vhq473 on 09.02.2016.
+ * Created by SR3u on 09.02.2016.
  */
 public class IfStatement extends SexprStatement
 {

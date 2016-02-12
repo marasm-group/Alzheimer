@@ -7,7 +7,7 @@ import com.marasm.alzheimer.Token;
 import java.util.ArrayList;
 
 /**
- * Created by vhq473 on 12.02.2016.
+ * Created by SR3u on 12.02.2016.
  */
 public class ImportStatement extends Statement
 {

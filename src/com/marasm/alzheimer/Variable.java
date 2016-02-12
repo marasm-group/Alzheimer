@@ -3,7 +3,7 @@ package com.marasm.alzheimer;
 import com.marasm.alzheimer.Types.NumberType;
 
 /**
- * Created by vhq473 on 11.02.2016.
+ * Created by SR3u on 11.02.2016.
  */
 public class Variable
 {

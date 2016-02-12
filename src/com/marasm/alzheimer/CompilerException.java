@@ -2,7 +2,7 @@ package com.marasm.alzheimer;
 
 
 /**
- * Created by vhq473 on 09.02.2016.
+ * Created by SR3u on 09.02.2016.
  */
 public class CompilerException extends Exception
 {

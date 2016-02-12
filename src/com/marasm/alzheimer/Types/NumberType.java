@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by vhq473 on 08.02.2016.
+ * Created by SR3u on 08.02.2016.
  */
 public class NumberType extends Type
 {
