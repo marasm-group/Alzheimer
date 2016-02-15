@@ -149,25 +149,25 @@ public class SexprStatement extends Statement
                 break;
             case "+":
             case "add":
-                exec("call $add",res);
+                exec("add",res);
                 break;
             case "-":
             case "sub":
-                exec("call $sub",res);
+                exec("sub",res);
                 break;
             case "*":
             case "mul":
-                exec("call $mul",res);
+                exec("mul",res);
                 break;
             case "/":
             case "div":
-                exec("call $div",res);
+                exec("div",res);
                 break;
             case "floor":
-                exec("call $floor",res);
+                exec("floor",res);
                 break;
             case "ceil":
-                exec("call $ceil",res);
+                exec("ceil",res);
                 break;
             default:
                 exec("call $"+op,res);

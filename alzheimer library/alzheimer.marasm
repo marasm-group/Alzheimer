@@ -12,50 +12,6 @@ gvar False
 mov True 1
 mov False 0
 ret
-$add 
-var __ALZ_A
-var __ALZ_B
-pop __ALZ_B
-pop __ALZ_A
-add __ALZ_A __ALZ_A __ALZ_B
-push __ALZ_A
-ret
-$sub
-var __ALZ_A
-var __ALZ_B
-pop __ALZ_B
-pop __ALZ_A
-sub __ALZ_A __ALZ_A __ALZ_B
-push __ALZ_A
-ret
-$mul 
-var __ALZ_A
-var __ALZ_B
-pop __ALZ_B
-pop __ALZ_A
-mul __ALZ_A __ALZ_A __ALZ_B
-push __ALZ_A
-ret
-$div 
-var __ALZ_A
-var __ALZ_B
-pop __ALZ_B
-pop __ALZ_A
-div __ALZ_A __ALZ_A __ALZ_B
-push __ALZ_A
-ret
-$floor 
-var __ALZ_A
-pop __ALZ_A
-floor __ALZ_A __ALZ_B
-push __ALZ_A
-ret
-$ceil 
-var __ALZ_A
-pop __ALZ_A
-ceil __ALZ_A __ALZ_B
-push __ALZ_A
-ret
 @__ALZ_ret_true
 push 1
 ret
