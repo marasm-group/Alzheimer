@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class SexprStatement extends Statement
 {
-    static String A="__ALZ_A";
-    static String B="__ALZ_B";
+    //static String A="__ALZ_A";
+    //static String B="__ALZ_B";
 
     public SexprStatement(ArrayList<Token> _tokens)
     {
@@ -35,7 +35,8 @@ public class SexprStatement extends Statement
     public ArrayList<String> compile(Compiler compiler) throws Exception
     {
         ArrayList<String>res=new ArrayList<>();
-        exec("var "+A+" ; "+statementString()+" \n"+"var "+B,res);
+        //exec("var "+A+" ; "+statementString()+" \n"+"var "+B,res);
+        exec(";"+statementString(),res);
         String eq=tokens.get(1).value;
         Token result=tokens.get(0);
         if(eq.equals("=")){tokens.remove(0);tokens.remove(0);}
@@ -62,7 +63,8 @@ public class SexprStatement extends Statement
                 else{res.addAll(v.type.pop(result.value));}
             }
         }
-        exec("delv "+A+" \n"+"delv "+B+" ; end of statement",res);
+        exec("; end of statement",res);
+        //exec("delv "+A+" \n"+"delv "+B+" ; end of statement",res);
         return res;
     }
 
@@ -147,43 +149,25 @@ public class SexprStatement extends Statement
                 break;
             case "+":
             case "add":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "add "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ", res);
+                exec("call $add",res);
                 break;
             case "-":
             case "sub":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "sub "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ",res);
+                exec("call $sub",res);
                 break;
             case "*":
             case "mul":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "mul "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ",res);
+                exec("call $mul",res);
                 break;
             case "/":
             case "div":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "div "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ",res);
+                exec("call $div",res);
                 break;
             case "floor":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "floor "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ",res);
+                exec("call $floor",res);
                 break;
             case "ceil":
-                exec("pop "+B+"\n" +
-                     "pop "+A+"\n" +
-                     "ceil "+A+" "+A+" "+B+"\n" +
-                     "push "+A+" ",res);
+                exec("call $ceil",res);
                 break;
             default:
                 exec("call $"+op,res);

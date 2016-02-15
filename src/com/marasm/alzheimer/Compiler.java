@@ -107,6 +107,7 @@ public class Compiler
                         cpuCode.addAll(WhileStatement.end(tokens,this));
                         break;
                     default:
+                        cpuCode.addAll(new SexprStatement(tokens).compile(this));
                         break;
                 }
             }
@@ -116,17 +117,8 @@ public class Compiler
                    "\"author\":\""+author+"\",\n" +
                    "\"dependencies\":["+dependenciesStr()+"],\n" +
                    "\"compiler\":\"Alzheimer\",\n" +
-                   "\"init\":\"$__ALZ_INIT\"\n" +
                    "}\n" +
                    "#end",cpuCode);
-        exec("halt 0; additional utilities",cpuCode);
-        exec("$__ALZ_INIT ; alzheimer initialization",cpuCode);
-        exec("gvar True",cpuCode);
-        exec("gvar False",cpuCode);
-        exec("mov True 1",cpuCode);
-        exec("mov False 0",cpuCode);
-        exec("ret",cpuCode);
-        cpuCode.addAll(IfStatement.endGeneration());
         exec("halt 0 ; end of code generation",cpuCode);
         return cpuCode;
     }
@@ -152,9 +144,9 @@ public class Compiler
             Token d=dependencies.get(i);
             if(!d.isString()){
                 throw new CompilerException("String expected!",d.file,d.line);}
-            res+=d.value;
-            if(i<dependencies.size()-1){res+=",";}
+            res+=d.value+",";
         }
+        res+="\"alzheimer\"";
         return res;
     }
     private Token pop(ArrayList<Token> tokens)
