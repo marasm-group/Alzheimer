@@ -33,7 +33,7 @@ public class ReturnStatement extends SexprStatement
             exec("ret ;",res);
             return res;
         }
-        res=super.compile(compiler);
+        res.addAll(super.compile(compiler));
         exec("ret ;",res);
         return res;
     }

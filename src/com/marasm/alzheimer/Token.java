@@ -16,10 +16,7 @@ public class Token
     public boolean isNumber()
     {
         if(value.length()==0){return false;}
-        NumberFormat formatter = NumberFormat.getInstance();
-        ParsePosition pos = new ParsePosition(0);
-        formatter.parse(value, pos);
-        return value.length() == pos.getIndex();
+        return value.matches("[-+]?\\d*\\.?\\d+");
     }
     public boolean isType()
     {
