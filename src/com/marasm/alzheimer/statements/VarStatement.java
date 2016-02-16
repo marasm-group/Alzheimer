@@ -33,7 +33,9 @@ public class VarStatement extends Statement
     @Override
     public ArrayList<String> compile(Compiler compiler)throws Exception
     {
-        type=tokens.get(tokens.size()-1).value;
+        Token typeToken=tokens.get(tokens.size()-1);
+        type = typeToken.value;
+
         for(int i=0;i<tokens.size()-1;i++)
         {
             variables.add(tokens.get(i).value);
@@ -44,6 +46,7 @@ public class VarStatement extends Statement
         {
             Variable var=new Variable();
             var.type=T;
+            if(T==null){throw new CompilerException("Unknown type "+this.type+"!",typeToken.file,typeToken.line);}
             var.isArray=isArray(v);
             var.name=v;
             if(compiler.globalScope){

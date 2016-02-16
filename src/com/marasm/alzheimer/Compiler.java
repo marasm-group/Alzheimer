@@ -106,6 +106,9 @@ public class Compiler
                     case "endwhile":
                         cpuCode.addAll(WhileStatement.end(tokens,this));
                         break;
+                    case "type":
+                        cpuCode.addAll(new TypeStatement(tokens).compile(this));
+                        break;
                     default:
                         cpuCode.addAll(new SexprStatement(tokens).compile(this));
                         break;

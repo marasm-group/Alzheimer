@@ -26,11 +26,15 @@ public class ReturnStatement extends SexprStatement
         }
         if(tokens.size()==1)
         {
-            exec("push "+tokens.get(0).value,res);
+            Variable v=Alzheimer.variables.get(tokens.get(0).value);
+            if(v==null){
+                throw new CompilerException("Varialbe or statement expected",tokens.get(0).file,tokens.get(0).line);}
+            res.addAll(v.type.push(v.name));
             exec("ret ;",res);
             return res;
         }
         res=super.compile(compiler);
+        exec("ret ;",res);
         return res;
     }
 }
