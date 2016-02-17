@@ -152,7 +152,11 @@ public class Compiler
             Type t=Alzheimer.types.get(tname);
             if(t.getClass().equals(CustomType.class))
             {
-               types.put(((CustomType)t).toJSON());
+                CustomType ct=(CustomType)t;
+                if(ct.export)
+                {
+                    types.put(ct.toJSON());
+                }
             }
         }
         json.put("types",types);

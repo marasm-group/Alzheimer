@@ -16,6 +16,7 @@ public class CustomType extends Type
 {
     private String varname;
     public String name;
+    public boolean export=true;
     public CustomType(String name)
     {
         this.name=name;
@@ -29,6 +30,7 @@ public class CustomType extends Type
         {
             this.fields.add(new Field(fields.getJSONObject(i)));
         }
+        export=false;
     }
 
 
