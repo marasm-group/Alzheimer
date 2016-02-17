@@ -1,8 +1,10 @@
 package com.marasm.alzheimer.statements;
 
 import com.marasm.alzheimer.CompilerException;
+import com.marasm.alzheimer.ModuleLoader;
 import com.marasm.alzheimer.Statement;
 import com.marasm.alzheimer.Token;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,9 @@ public class ImportStatement extends Statement
         {
             if(!t.isString()){throw new CompilerException("String expected!",t.file,t.line);}
             compiler.dependencies.add(t);
+            String fname=t.value;
+            fname=fname.replaceAll("\\\"","");
+            ModuleLoader.loadModule(fname);
         }
         return res;
     }

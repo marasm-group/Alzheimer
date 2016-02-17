@@ -1,6 +1,9 @@
 package com.marasm.alzheimer;
 
+import com.marasm.alzheimer.Types.CustomType;
 import com.marasm.alzheimer.statements.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -120,6 +123,7 @@ public class Compiler
                    "\"author\":\""+author+"\",\n" +
                    "\"dependencies\":["+dependenciesStr()+"],\n" +
                    "\"compiler\":\"Alzheimer\",\n" +
+                   "\"Alzheimer\":" +alzheimerStr()+
                    "}\n" +
                    "#end",cpuCode);
         exec("halt 0 ; end of code generation",cpuCode);
@@ -138,6 +142,21 @@ public class Compiler
         res.addAll(cpuCode);
         cpuCode.clear();
         cpuCode.addAll(res);
+    }
+    private String alzheimerStr()
+    {
+        JSONObject json=new JSONObject();
+        JSONArray types=new JSONArray();
+        for(String tname:Alzheimer.types.keySet())
+        {
+            Type t=Alzheimer.types.get(tname);
+            if(t.getClass().equals(CustomType.class))
+            {
+               types.put(((CustomType)t).toJSON());
+            }
+        }
+        json.put("types",types);
+        return json.toString();
     }
     private String dependenciesStr()throws Exception
     {

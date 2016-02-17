@@ -4,13 +4,17 @@ package com.marasm.alzheimer;
  * Created by abogdanov on 09.02.16.
  */
 
+import org.apache.commons.cli.*;
+
 import java.util.ArrayList;
 
 public class ArgParser {
     private String srcPath;
     private String dstPath;
     private String author;
-    private boolean dontCompile;
+    private boolean dontCompile=false;
+    String[]args;
+    Options options=new Options();
 
     private ArrayList<String> cmdArgs;
 
@@ -18,12 +22,14 @@ public class ArgParser {
 
     public ArgParser(String[] args)
     {
-        cmdArgs = new ArrayList<String>();
-        for(String tmp : args)
-        {
-            cmdArgs.add(tmp);
-        }
+        options.addOption("src","Alzheimer source file");
+        options.addOption("in","Alzheimer source file");
+        options.addOption("out","output marasm file");
+        options.addOption("author","Author of file");
+        options.addOption("h",false,"print help");
+        options.addOption("mvmHome",true,"set custom mvm home directory");
         dontCompile = false;
+        this.args=args;
     }
 
     public String getSrcPath()
@@ -48,56 +54,42 @@ public class ArgParser {
 
     public void Parse()
     {
-        while(cmdArgs.size() > 0)
-        {
-            if(keywords[0].equals(cmdArgs.get(0)))
-            {
-                if(cmdArgs.size() > 1)
-                {
-                    srcPath = cmdArgs.get(1);
-                }
-                else {
-                    BadArgs();
-                    return;
-                }
-
-            }
-            else if(keywords[1].equals(cmdArgs.get(0)))
-            {
-                if(cmdArgs.size() > 1)
-                {
-                    dstPath = cmdArgs.get(1);
-                }
-                else {
-                    BadArgs();
-                    return;
-                }
-            }
-            else if(keywords[2].equals(cmdArgs.get(0)))
-            {
-                if(cmdArgs.size() > 1)
-                {
-                    author = cmdArgs.get(1);
-                }
-                else {
-                    BadArgs();
-                    return;
-                }
-            }
-            else if(keywords[3].equals(cmdArgs.get(0)))
-            {
-                PrintHelp();
-                return;
-            }
-            else
-            {
-                BadArgs();
-                return;
-            }
-            cmdArgs.remove(0);
-            cmdArgs.remove(0);
-        }
         PrintInfo();
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = null;
+        try {
+            cmd = parser.parse( options, args);
+        } catch (ParseException e) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("alzheimer", options);
+            System.exit(127);
+        }
+        if(cmd.hasOption("h"))
+        {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("mvm", options);
+            System.exit(0);
+        }
+        if(cmd.hasOption("mvmHome"))
+        {
+            Utils.setMarasmHome(cmd.getOptionValue("mvmHome"));
+        }
+        if(cmd.hasOption("src"))
+        {
+            srcPath=cmd.getOptionValue("src");
+        }
+        if(cmd.hasOption("in"))
+        {
+            srcPath=cmd.getOptionValue("in");
+        }
+        if(cmd.hasOption("out"))
+        {
+            dstPath=cmd.getOptionValue("out");
+        }
+        if(cmd.hasOption("author"))
+        {
+            dstPath=cmd.getOptionValue("author");
+        }
     }
 
     private void BadArgs()

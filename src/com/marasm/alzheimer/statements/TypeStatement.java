@@ -32,7 +32,7 @@ public class TypeStatement extends Statement
         {
             throw new CompilerException("Expected type name",typeName.file,typeName.line);
         }
-        CustomType customType=new CustomType();
+        CustomType customType=new CustomType(typeName.value);
         tokens.remove(0);
         Token type=defaultType();
         while(tokens.size()>0)

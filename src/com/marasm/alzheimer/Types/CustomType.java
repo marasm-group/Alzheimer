@@ -1,9 +1,11 @@
 package com.marasm.alzheimer.Types;
 
 import com.marasm.alzheimer.Alzheimer;
-import com.marasm.alzheimer.Token;
 import com.marasm.alzheimer.Type;
 import com.marasm.alzheimer.Variable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -13,6 +15,22 @@ import java.util.ArrayList;
 public class CustomType extends Type
 {
     private String varname;
+    public String name;
+    public CustomType(String name)
+    {
+        this.name=name;
+    }
+    public CustomType(JSONObject json) throws JSONException
+    {
+        super();
+        this.name=json.getString("name");
+        JSONArray fields=json.getJSONArray("fields");
+        for(int i=0;i<fields.length();i++)
+        {
+            this.fields.add(new Field(fields.getJSONObject(i)));
+        }
+    }
+
 
     public static class Field
     {
@@ -23,6 +41,18 @@ public class CustomType extends Type
         {
             this.name=name;
             this.type=type;
+        }
+        public Field(JSONObject json) throws JSONException
+        {
+            this.name=json.getString("name");
+            this.type=json.getString("type");
+        }
+        public JSONObject toJSON()
+        {
+            JSONObject json=new JSONObject();
+            json.put("name",name);
+            json.put("type",type);
+            return json;
         }
     }
     public ArrayList<Field> fields=new ArrayList<>();
@@ -121,13 +151,19 @@ public class CustomType extends Type
 
     public String toString()
     {
-        String res="type{\n";
-        for(Field f:fields)
+        return toJSON().toString();
+    }
+    public JSONObject toJSON()
+    {
+        JSONObject json=new JSONObject();
+        json.put("name",name);
+        JSONArray fields=new JSONArray();
+        for(Field f:this.fields)
         {
-            res+=f.name+" "+f.type+"\n";
+            fields.put(f.toJSON());
         }
-        res+="}";
-        return res;
+        json.put("fields",fields);
+        return json;
     }
 
     private String getVarName(String name,Field i)
@@ -140,4 +176,5 @@ public class CustomType extends Type
         String idx=name.substring(n.length());
         return n+"."+i.name+idx;
     }
+
 }
