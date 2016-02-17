@@ -4,7 +4,6 @@ import com.marasm.alzheimer.CompilerException;
 import com.marasm.alzheimer.ModuleLoader;
 import com.marasm.alzheimer.Statement;
 import com.marasm.alzheimer.Token;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 
 import java.util.ArrayList;
 
