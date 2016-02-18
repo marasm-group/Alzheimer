@@ -1,6 +1,5 @@
 # Alzheimer
 A high-level language for [mvm](https://github.com/marasm-group/mvm)
-[syntax](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/SYNTAX.txt)
 ![Logo](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/logo.png)
 
 ## Installation ##
