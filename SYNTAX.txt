@@ -136,6 +136,36 @@ end
 # add <marasm_module1> <marasm_module2> ... <marasm_modulen> as dependencies for your program
 import "conio" "common" ;
 
+#################
+# custom types  #
+#################
+# type :<NewTypeName>
+#	:<SomeType> <field1> <field2> ... <fieldn>
+#	:<SomeOtherType> <fieldn+1> <fieldn+2> ... <fieldn+m>
+#	.....................
+# end
+#
+# create instance
+# var <varname> :<NewTypeName>
+# access fields
+# <varname>.<fieldname>
+
+
+type :Point # point on screen
+	:number x y
+end
+type :Size # size on screen
+	:number	w h
+end
+type :Rect # rectangle on screen
+	:Point origin
+	:Size size
+end
+
+var p :Point
+$: p.x=(1);
+$: p.y=(add(p.x 100));
+
 ###################################
 # low level code (asm: statement) #
 ###################################
