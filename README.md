@@ -15,3 +15,10 @@ you can also find some examples [here](https://github.com/marasm-group/Alzheimer
 You can find syntax highlight plugins for some editors in [SyntaxHighlight](https://github.com/marasm-group/Alzheimer/tree/master/SyntaxHighlight) folder.
 
 Also there is an [mvm](https://github.com/marasm-group/mvm) library in [alzheimer library](https://github.com/marasm-group/Alzheimer/tree/master/alzheimer%20library) folder.
+
+## Lisence ##
+
+This software is licensed under [WTFPL](http://www.wtfpl.net/about/). So you can do with it whatever you want!
+
+![wtfpl.svg](http://www.wtfpl.net/wp-content/uploads/2012/12/wtfpl.svg)
+ 
