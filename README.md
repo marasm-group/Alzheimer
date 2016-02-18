@@ -1,8 +1,9 @@
 # Alzheimer
-A high-level language for mvm
+A high-level language for [mvm](https://github.com/marasm-group/mvm)
 
 ![Logo](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/logo.png)
 
 ## Installation ##
 
-In order to use some common stuff (like add mul sub div, etc functions) copy the contents of alzheimer library folder to mvm modules folder
+In order to use some common stuff (like comparison functions) copy the contents of alzheimer library folder to mvm modules folder
+Also alzheimer.jar works better if it is placed in [mvm](https://github.com/marasm-group/mvm) home directory
