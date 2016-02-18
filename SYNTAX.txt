@@ -172,9 +172,14 @@ $: p.y=(add(p.x 100));
 # asm: 
 # <assembly_code>
 # end
-# each line of assembly code should terminate with ;
+# each line of assembly code should terminated with ;
 
 
-
+#############
+# MORE INFO #
+#############
+#
+# for more info see examples in tests folder in project
+# 
 
 
