@@ -8,4 +8,4 @@ In order to use some common stuff (like comparison functions) copy the contents 
 Also alzheimer.jar works better if it is placed in [mvm](https://github.com/marasm-group/mvm) home directory
 
 ## Synta ##
-syntax is described[here](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/SYNTAX.txt)
+syntax is described [here](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/SYNTAX.txt)
