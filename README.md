@@ -14,4 +14,4 @@ you can also find some examples [here](https://github.com/marasm-group/Alzheimer
 ## Useful stuff ##
 You can find syntax highlight plugins for some editors in [SyntaxHighlight](https://github.com/marasm-group/Alzheimer/tree/master/SyntaxHighlight) folder.
 
-Also there is a library in [alzheimer library](https://github.com/marasm-group/Alzheimer/tree/master/alzheimer%20library) folder.
+Also there is a [mvm](https://github.com/marasm-group/mvm) library in [alzheimer library](https://github.com/marasm-group/Alzheimer/tree/master/alzheimer%20library) folder.
