@@ -10,7 +10,7 @@ patterns:
   name: constant.numeric.dec
 - name: entity.name.function
   match: ([^(\s]\S+?(?=\())
-- match: \b(if|else|endif|while|endwhile|break|continue|return|type|end|import)\b
+- match: \b(if|else|endif|while|endwhile|break|continue|return|type|end|import|for|endfor)\b
   name: keyword.alzheimer
 - match: (\$\:|fun:|asm:)
   name: keyword.alzheimer.funasms
