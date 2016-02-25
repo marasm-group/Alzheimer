@@ -1,0 +1,6 @@
+import "VEGA" "conio" "common";
+$: setColor(color(0 255 0));
+$: drawRect(0 0 100 100);
+fun: color(r g b) :number
+  return add(b add(mul(g 256) mul(r 65536)));
+end

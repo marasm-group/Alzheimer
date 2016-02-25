@@ -29,6 +29,14 @@ public class VarStatement extends Statement
         {
             tokens.remove(tokens.size()-1);
         }
+        if(!tokens.get(tokens.size()-1).isType())
+        {
+            Token tk=new Token();
+            tk.value=":number";
+            tk.file=tokens.get(0).file;
+            tk.line=tokens.get(0).line;
+            tokens.add(tk);
+        }
     }
     @Override
     public ArrayList<String> compile(Compiler compiler)throws Exception

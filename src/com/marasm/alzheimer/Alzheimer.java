@@ -13,6 +13,7 @@ public class Alzheimer
             "gvar",//Global VARiable
             "var",//local VARiable
             "if","else","endif","while","endwhile","break","continue",
+            "for","endfor",
             "fun:",//FUNction declaration
             "return",//RETURN from function/or program
             "type",//custom TYPE declaration

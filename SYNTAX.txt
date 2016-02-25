@@ -98,6 +98,25 @@ endwhile
 # break statement aborts loop execution immediatelly
 # continue statement aborts current loop iteration jumping it to the next one
 
+############
+# for loop #
+############
+INITIALIZATION; CONDITION; AFTERT HOUGHT
+# for <initialization>; <condition> ; <afterthough>;
+# 	<code>
+# endfor
+# # basically is transformed to
+# <initialization>
+# while <condition>:
+# 	<code>
+# 	<afterthough>
+# endwhile
+var i;
+for i=(0); less(i 3) ; i=(add(i 1));
+	$: a=(add(a 1)) # will be executed 3 times
+endfor
+
+
 ########################
 # function declaration #
 ########################

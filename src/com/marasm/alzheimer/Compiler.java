@@ -33,7 +33,19 @@ public class Compiler
     public ArrayList<String> compile(ArrayList<Token> tokens) throws  Exception
     {
         try{
-            return compile_internal(tokens);
+            ArrayList<String>cpuCode=new ArrayList<>();
+            exec(";;; Alzheimer generated code ;;;",cpuCode);
+            cpuCode.addAll(compileStatements(tokens));
+            exec_begin("#json\n" +
+                    "{\n" +
+                    "\"author\":\""+author+"\",\n" +
+                    "\"dependencies\":["+dependenciesStr()+"],\n" +
+                    "\"compiler\":\"Alzheimer\",\n" +
+                    "\"Alzheimer\":" +alzheimerStr()+
+                    "}\n" +
+                    "#end",cpuCode);
+            exec("halt 0 ; end of code generation",cpuCode);
+            return cpuCode;
         }
         catch (CompilerException ce)
         {
@@ -41,10 +53,9 @@ public class Compiler
             throw new Exception("compilation error",ce);
         }
     }
-    private ArrayList<String> compile_internal(ArrayList<Token> tokens) throws Exception
+    ArrayList<String> compileStatements(ArrayList<Token> tokens) throws Exception
     {
         ArrayList<String>cpuCode=new ArrayList<>();
-        exec(";;; Alzheimer generated code ;;;",cpuCode);
         while (!tokens.isEmpty())
         {
             Token t=pop(tokens);
@@ -112,21 +123,18 @@ public class Compiler
                     case "type":
                         cpuCode.addAll(new TypeStatement(tokens).compile(this));
                         break;
+                    case "for":
+                        cpuCode.addAll(new ForStatement(tokens).compile(this));
+                        break;
+                    case "endfor":
+                        cpuCode.addAll(ForStatement.end(tokens,this));
+                        break;
                     default:
                         cpuCode.addAll(new SexprStatement(tokens).compile(this));
                         break;
                 }
             }
         }
-        exec_begin("#json\n" +
-                   "{\n" +
-                   "\"author\":\""+author+"\",\n" +
-                   "\"dependencies\":["+dependenciesStr()+"],\n" +
-                   "\"compiler\":\"Alzheimer\",\n" +
-                   "\"Alzheimer\":" +alzheimerStr()+
-                   "}\n" +
-                   "#end",cpuCode);
-        exec("halt 0 ; end of code generation",cpuCode);
         return cpuCode;
     }
     private void exec(String cmd,ArrayList<String>cpuCode)
