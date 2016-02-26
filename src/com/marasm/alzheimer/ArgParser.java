@@ -22,6 +22,7 @@ public class ArgParser {
         options.addOption("out",true,"output marasm file");
         options.addOption("author",true,"Author of file");
         options.addOption("h",false,"print help");
+        options.addOption("help",false,"print help");
         options.addOption("mvmHome",true,"set custom mvm home directory");
         options.addOption("noTrim",false,"disable comments trimming in generated code (may be used for debugging purposes)");
         dontCompile = false;
@@ -60,7 +61,7 @@ public class ArgParser {
             formatter.printHelp("alzheimer", options);
             System.exit(127);
         }
-        if(cmd.hasOption("h"))
+        if(cmd.hasOption("h")||cmd.hasOption("help"))
         {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("mvm", options);
