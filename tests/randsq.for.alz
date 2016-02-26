@@ -44,7 +44,7 @@ fun: srand(r :number) # setup randu pseudorandom number generator
 	gvar __RAND :number
 	__RAND=r;
 end
-fun: rand() :number	# return rendu pseudorandom number
+fun: rand() :number	# return randu pseudorandom number
 	__RAND=mod(mul(65539 __RAND) 2147483648);
 	return div(__RAND 2147483.648);
 end
