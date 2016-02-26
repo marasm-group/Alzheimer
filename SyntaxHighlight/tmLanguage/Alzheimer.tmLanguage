@@ -39,7 +39,7 @@
 			<key>match</key>
 			<string>([\:]\b.+?\b)</string>
 			<key>name</key>
-			<string>keyword.type</string>
+			<string>storage.type</string>
 		</dict>
 		<dict>
 			<key>match</key>

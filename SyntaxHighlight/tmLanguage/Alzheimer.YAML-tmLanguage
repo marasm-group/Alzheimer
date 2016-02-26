@@ -15,7 +15,7 @@ patterns:
 - match: (\$\:|fun:|asm:)
   name: keyword.alzheimer.funasms
 - match: ([\:]\b.+?\b)
-  name: keyword.type  
+  name: storage.type  
 - match: (\;|\:)
   name: keyword.alzheimer.separators
 - match: \b(trace|log|print)\b
