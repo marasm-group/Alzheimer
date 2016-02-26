@@ -85,13 +85,19 @@ public class SexprStatement extends Statement
                 return res;
             }
             res.addAll(pushVariable(opTok));
+            return res;
         }
         if(!opTok.value.equals("("))
         {
-            Token tmp=tokens.remove(0);
-            if(!tmp.value.equals("("))
+            if(tokens.size()!=0)
             {
-                throw new CompilerException("( expected",tmp.file,tmp.line);
+                Token tmp = tokens.remove(0);
+                if (!tmp.value.equals("(")) {
+                    throw new CompilerException("( expected", tmp.file, tmp.line);
+                }
+            }
+            else{
+                throw new CompilerException("Something is wrong!",opTok.file,opTok.line);
             }
         }
         ArrayList<String> args=new ArrayList<>();
