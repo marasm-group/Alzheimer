@@ -22,10 +22,10 @@ public class ArgParser {
 
     public ArgParser(String[] args)
     {
-        options.addOption("src","Alzheimer source file");
-        options.addOption("in","Alzheimer source file");
-        options.addOption("out","output marasm file");
-        options.addOption("author","Author of file");
+        options.addOption("src",true,"Alzheimer source file");
+        options.addOption("in",true,"Alzheimer source file");
+        options.addOption("out",true,"output marasm file");
+        options.addOption("author",true,"Author of file");
         options.addOption("h",false,"print help");
         options.addOption("mvmHome",true,"set custom mvm home directory");
         dontCompile = false;
