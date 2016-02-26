@@ -1,7 +1,7 @@
 import "conio";
-var i j;
+var i j ;
 for i=(0); less(i 3) ; i=(add(i 1));
 	for j=(0); less(j 2) ; j=(add(j 1));		
-		putstr("HELLO!\n");
+		putstr("HELLO!\n");		
 	endfor
 endfor

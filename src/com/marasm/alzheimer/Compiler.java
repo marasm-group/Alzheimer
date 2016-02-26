@@ -38,12 +38,13 @@ public class Compiler
             if(Alzheimer.trimMarasmComments)
             {
                 ArrayList<String> res=new ArrayList<>();
-                for(int i=0;i<cpuCode.size();i++)
+                for(int i=0;cpuCode.size()>0;i++)
                 {
                     String cmd=cpuCode.remove(0);
                     String[]cmds=cmd.split("\n");
                     for(String newCmd:cmds)
                     {
+                        String tmp=""+newCmd;
                         newCmd=newCmd.replaceAll("\\n","");
                         newCmd=newCmd.replaceAll(";[^']*.*$","");
                         if(newCmd.length()>0){res.add(newCmd);}

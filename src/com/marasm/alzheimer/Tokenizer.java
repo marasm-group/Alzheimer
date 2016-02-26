@@ -13,94 +13,101 @@ import java.util.List;
 public class Tokenizer
 {
     ArrayList<Token> tokens;
+    int line=0;
     public ArrayList<Token> tokenize(File _file) throws FileNotFoundException, CompilerException {
         FileReader file=new FileReader(_file);
         tokens=new ArrayList<>();
         String fileName=_file.getName();
-        int line=0;
+        line=0;
         try {
-            int chr=0;
+            String chr=readChar(file);
             Token t=new Token();
-            chr=file.read();
-            while(chr!=-1)
-            {
-                String chrstr=Character.toString((char)chr);
-                if(chrstr.equals("'"))
+            while(chr!=null) {
+                Token tmp=processCharacter(chr, file,fileName,t);
                 {
-                    if(t.value.length()>0) {
-                        t = addToken(t, fileName, line);
-                    }
-                        t.value+=chrstr;
-                        chr=file.read();
-                        chrstr=Character.toString((char)chr);
-                        while ((!chrstr.equals("'")||(t.value.endsWith("\\")))&&!(chr <0))
-                        {
-                            t.value+=chrstr;
-                            chr=file.read();
-                            chrstr=Character.toString((char)chr);
-                        }
-                        t.value+=chrstr;
-                        if(t.value.length()<3){throw  new CompilerException("short size for char constant",fileName,line);}
-                        t=addToken(t,fileName,line);
-                        chr=file.read();
-
-                    chrstr=Character.toString((char)chr);
-                }
-                if(chrstr.equals("\""))
-                {
-                    if(t.value.length()>0) {
-                        t = addToken(t, fileName, line);
-                    }
-                    t.value+=chrstr;
-                    chr=file.read();
-                    chrstr=Character.toString((char)chr);
-                    while ((!chrstr.equals("\"")||(t.value.endsWith("\\")))&&!(chr <0))
+                    if(tmp!=null)
                     {
-                        t.value+=chrstr;
-                        chr=file.read();
-                        chrstr=Character.toString((char)chr);
-                    }
-                    t.value+=chrstr;
-                    if(t.value.length()<3){throw  new CompilerException("short size for char constant",fileName,line);}
-                    t=addToken(t,fileName,line);
-                    chr=file.read();
-                    chrstr=Character.toString((char)chr);
-                }
-                if(chrstr.equals("#"))
-                {
-                    while(!chrstr.equals("\n"))
-                    {
-                        chr=file.read();
-                        chrstr=Character.toString((char)chr);
-                    }
-                    chr=file.read();
-                    chrstr=Character.toString((char)chr);
-                }
-                if(isWhitespace(chrstr))
-                {
-                    if(chrstr.equals("\n")){line++;}
-                    t=addToken(t,fileName,line);
-                }
-                else
-                {
-                    if(chrstr.equals("(")||chrstr.equals(")")||chrstr.equals(",")||chrstr.equals(";")||chrstr.equals("="))
-                    {
-                        t=addToken(t,fileName,line);
-                        t.value+=chrstr;
-                        t=addToken(t,fileName,line);
-                    }
-                    else
-                    {
-                        t.value+=chrstr;
+                        t=tmp;
                     }
                 }
-                chr=file.read();
+                chr=readChar(file);
             }
-            t=addToken(t,fileName,line);
+            addToken(t,fileName,line);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return tokens;
+    }
+    String readChar(FileReader file) throws IOException {
+        int chr = file.read();
+        if(chr==-1){return null;}
+        String chrstr = Character.toString((char) chr);
+        return chrstr;
+    }
+    Token processCharacter(String chr,FileReader file,String fileName,Token t) throws IOException, CompilerException {
+        if(chr.equals("#"))
+        {
+            while(!chr.equals("\n")){
+                chr=readChar(file);
+                if(chr==null){return null;}
+            }
+            if(chr.equals("\n")){line++;}
+            return t;
+        }
+        if(isWhitespace(chr))
+        {
+            t=addToken(t,fileName,line);
+            if(chr.equals("\n")){line++;}
+            return t;
+        }
+        if(chr.equals(";")||chr.equals("(")||chr.equals(")"))
+        {
+            t=addToken(t,fileName,line);
+            t.value=chr;
+            t=addToken(t,fileName,line);
+            return t;
+        }
+        if(chr.equals("="))
+        {
+            t=addToken(t,fileName,line);
+            t.value=chr;
+            t=addToken(t,fileName,line);
+            return t;
+        }
+        if(chr.equals("'"))
+        {
+            t=addToken(t,fileName,line);
+            t.value+=chr;
+            chr=readChar(file);
+            t.value+=chr;
+            while(!chr.equals("'"))
+            {
+                chr=readChar(file);
+                if(chr==null){return null;}
+                t.value+=chr;
+            }
+            if(t.value.length()<3){throw  new CompilerException("'"+t.value+"' is too short for char constant",fileName,line);}
+            if(t.value.length()>4){throw  new CompilerException("'"+t.value+"' is too long for char constant",fileName,line);}
+            t=addToken(t,fileName,line);
+            return t;
+        }
+        if(chr.equals("\""))
+        {
+            t=addToken(t,fileName,line);
+            t.value+=chr;
+            chr=readChar(file);
+            t.value+=chr;
+            while(!chr.equals("\""))
+            {
+                chr=readChar(file);
+                if(chr==null){return null;}
+                t.value+=chr;
+            }
+            t=addToken(t,fileName,line);
+            return t;
+        }
+        t.value+=chr;
+        return null;
     }
     public boolean isWhitespace(String s)
     {
