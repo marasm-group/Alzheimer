@@ -90,26 +90,7 @@ public class ArgParser {
         {
             dstPath=cmd.getOptionValue("author");
         }
-    }
 
-    private void BadArgs()
-    {
-        System.out.println("Bad command line arguments");
-        PrintHelp();
-    }
-
-    private void PrintHelp()
-    {
-        PrintInfo();
-        System.out.println("Available arguments: ");
-        System.out.println("    --src <filename> - specify alzheimer source file location.");
-        System.out.println("    --file <filename> - specify mvm output file destination.");
-        System.out.println("    --author <name> - specify author name.");
-        System.out.println("    --help - print this help message");
-        srcPath = null;
-        dstPath = null;
-        author = null;
-        dontCompile = true;
     }
 
     private void PrintInfo()
