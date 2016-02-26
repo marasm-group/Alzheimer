@@ -47,6 +47,7 @@ public class Compiler
                         String tmp=""+newCmd;
                         newCmd=newCmd.replaceAll("\\n","");
                         newCmd=newCmd.replaceAll(";[^']*.*$","");
+                        newCmd=newCmd.replaceAll("[\\ ]*$","");
                         if(newCmd.length()>0){res.add(newCmd);}
                     }
                 }
