@@ -19,13 +19,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>([^(\s]\S+?(?=\())</string>
+			<string>([^(\s=]+?(?=\())</string>
 			<key>name</key>
 			<string>entity.name.function</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(if|else|endif|while|endwhile|break|continue|return|type|end|import|for|endfor)\b</string>
+			<string>\b(if|else|endif|while|endwhile|break|continue|return|type|end|import)\b</string>
 			<key>name</key>
 			<string>keyword.alzheimer</string>
 		</dict>
