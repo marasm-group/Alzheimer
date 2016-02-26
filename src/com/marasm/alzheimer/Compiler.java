@@ -59,7 +59,7 @@ public class Compiler
                     "\"author\":\""+author+"\",\n" +
                     "\"dependencies\":["+dependenciesStr()+"],\n" +
                     "\"compiler\":\"Alzheimer\",\n" +
-                    "\"Alzheimer\":" +alzheimerStr()+
+                    "\"Alzheimer\":" +alzheimerStr()+"\n"+
                     "}\n" +
                     "#end",cpuCode);
             exec("halt 0 ; end of code generation",cpuCode);
