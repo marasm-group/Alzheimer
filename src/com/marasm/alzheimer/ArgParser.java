@@ -64,7 +64,7 @@ public class ArgParser {
         if(cmd.hasOption("h")||cmd.hasOption("help"))
         {
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("mvm", options);
+            formatter.printHelp("alzheimer", options);
             System.exit(0);
         }
         if(cmd.hasOption("mvmHome"))
