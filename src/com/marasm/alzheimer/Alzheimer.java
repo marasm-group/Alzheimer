@@ -29,6 +29,7 @@ public class Alzheimer
         types.put(":number",new NumberType());
     }
     static public boolean LogCPUInstructions=false;
+    static public boolean trimMarasmComments=true;
 
     static public Map<String,Variable> variables=new HashMap<>();
     static public Map<String,Variable> globalVariables=new HashMap<>();

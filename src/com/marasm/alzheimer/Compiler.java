@@ -34,8 +34,24 @@ public class Compiler
     {
         try{
             ArrayList<String>cpuCode=new ArrayList<>();
-            exec(";;; Alzheimer generated code ;;;",cpuCode);
             cpuCode.addAll(compileStatements(tokens));
+            if(Alzheimer.trimMarasmComments)
+            {
+                ArrayList<String> res=new ArrayList<>();
+                for(int i=0;i<cpuCode.size();i++)
+                {
+                    String cmd=cpuCode.remove(0);
+                    String[]cmds=cmd.split("\n");
+                    for(String newCmd:cmds)
+                    {
+                        newCmd=newCmd.replaceAll("\\n","");
+                        newCmd=newCmd.replaceAll(";[^']*.*$","");
+                        if(newCmd.length()>0){res.add(newCmd);}
+                    }
+                }
+                cpuCode=res;
+            }
+            exec_begin(";;; Alzheimer generated code ;;;",cpuCode);
             exec_begin("#json\n" +
                     "{\n" +
                     "\"author\":\""+author+"\",\n" +
@@ -149,11 +165,7 @@ public class Compiler
     private void exec_begin(String cmd,ArrayList<String>cpuCode)
     {
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
-        ArrayList<String>res=new ArrayList<>();
-        res.add(cmd);
-        res.addAll(cpuCode);
-        cpuCode.clear();
-        cpuCode.addAll(res);
+        cpuCode.add(0,cmd);
     }
     private String alzheimerStr()
     {

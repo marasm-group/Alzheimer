@@ -6,8 +6,6 @@ package com.marasm.alzheimer;
 
 import org.apache.commons.cli.*;
 
-import java.util.ArrayList;
-
 public class ArgParser {
     private String srcPath;
     private String dstPath;
@@ -16,9 +14,6 @@ public class ArgParser {
     String[]args;
     Options options=new Options();
 
-    private ArrayList<String> cmdArgs;
-
-    private final String[] keywords = {"--src", "--file", "--author", "--help"};
 
     public ArgParser(String[] args)
     {
@@ -28,6 +23,7 @@ public class ArgParser {
         options.addOption("author",true,"Author of file");
         options.addOption("h",false,"print help");
         options.addOption("mvmHome",true,"set custom mvm home directory");
+        options.addOption("noTrim",false,"disable comments trimming in generated code (may be used for debugging purposes)");
         dontCompile = false;
         this.args=args;
     }
@@ -89,6 +85,10 @@ public class ArgParser {
         if(cmd.hasOption("author"))
         {
             dstPath=cmd.getOptionValue("author");
+        }
+        if(cmd.hasOption("noTrim"))
+        {
+            Alzheimer.trimMarasmComments=false;
         }
 
     }
