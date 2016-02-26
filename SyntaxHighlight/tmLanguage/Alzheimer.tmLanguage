@@ -25,7 +25,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(if|else|endif|while|endwhile|break|continue|return|type|end|import)\b</string>
+			<string>\b(if|else|endif|while|endwhile|break|continue|return|type|end|import|for|endfor)\b</string>
 			<key>name</key>
 			<string>keyword.alzheimer</string>
 		</dict>
