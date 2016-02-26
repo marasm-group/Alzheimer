@@ -71,8 +71,22 @@ public class SexprStatement extends Statement
     private ArrayList<String> expression(ArrayList<Token> tokens)throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
-        String op=tokens.remove(0).value;
-        if(!op.equals("("))
+        Token opTok=tokens.remove(0);
+        if(tokens.size()<1)
+        {
+            Variable v=Alzheimer.variables.get(opTok.value);
+            if(v==null)
+            {
+                if(!opTok.isNumber())
+                {
+                    throw  new CompilerException("Number or variable expected",opTok.file,opTok.line);
+                }
+                res.add("push "+opTok.value+";");
+                return res;
+            }
+            res.addAll(pushVariable(opTok));
+        }
+        if(!opTok.value.equals("("))
         {
             Token tmp=tokens.remove(0);
             if(!tmp.value.equals("("))
@@ -101,20 +115,7 @@ public class SexprStatement extends Statement
                     }
                     if(t.isString()){exec(t.pushString(),res);}
                     else{
-                        Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
-                        if(v==null){
-                            if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
-                                throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
-                            exec("push "+t.value+";",res);
-                        }else {
-                            if (v.isArray && !t.isArray()) {
-                                for (int i = 0; i < v.arraySize(); i++) {
-                                    res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
-                                }
-                            } else {
-                                res.addAll(v.type.push(t.value));
-                            }
-                        }
+                        res.addAll(pushVariable(t));
                     }
                 }
             }
@@ -124,26 +125,12 @@ public class SexprStatement extends Statement
                 if(t.value.equals(")")){break;}
                 if(t.isString()){exec(t.pushString(),res);}
                 else{
-                    Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
-                    if(v==null)
-                    {
-                        if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
-                            throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
-                        exec("push "+t.value+";",res);
-                    }else {
-                        if (v.isArray && !t.isArray()) {
-                            for (int i = 0; i < v.arraySize(); i++) {
-                                res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
-                            }
-                        } else {
-                            res.addAll(v.type.push(t.value));
-                        }
-                    }
+                    res.addAll(pushVariable(t));
                 }
             }
 
         }
-        switch (op)
+        switch (opTok.value)
         {
             case "(":
                 break;
@@ -170,7 +157,7 @@ public class SexprStatement extends Statement
                 exec("ceil",res);
                 break;
             default:
-                exec("call $"+op,res);
+                exec("call $"+opTok.value,res);
 
         }
         return res;
@@ -183,5 +170,24 @@ public class SexprStatement extends Statement
             res+=t.value+" ";
         }
         return res+";";
+    }
+    private ArrayList<String> pushVariable(Token t) throws Exception
+    {
+        ArrayList<String> res=new ArrayList<>();
+        Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
+        if(v==null){
+            if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
+                throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
+            exec("push "+t.value+";",res);
+        }else {
+            if (v.isArray && !t.isArray()) {
+                for (int i = 0; i < v.arraySize(); i++) {
+                    res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
+                }
+            } else {
+                res.addAll(v.type.push(t.value));
+            }
+        }
+        return res;
     }
 }

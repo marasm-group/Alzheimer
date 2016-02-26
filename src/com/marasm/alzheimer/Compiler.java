@@ -130,9 +130,13 @@ public class Compiler
                         cpuCode.addAll(ForStatement.end(tokens,this));
                         break;
                     default:
-                        cpuCode.addAll(new SexprStatement(tokens).compile(this));
-                        break;
+                        throw new CompilerException("Illegal keyword '"+t.value+"'",t.file,t.line);
                 }
+            }
+            else
+            {
+                tokens.add(0,t);
+                cpuCode.addAll(new SexprStatement(tokens).compile(this));
             }
         }
         return cpuCode;
