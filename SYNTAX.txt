@@ -32,8 +32,6 @@ var myAwesomeArray[100] :number # myAwesomeArray.size=100
 # built-in types: 
 # :number
 
-# currently language supports only build-in types
-
 ##############
 # statements #
 ##############
