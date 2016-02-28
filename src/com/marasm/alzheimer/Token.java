@@ -74,6 +74,21 @@ public class Token
         if (idx== -1){return value;}
         return value.substring(0,idx);
     }
+    public String valueAfterIndex()
+    {
+        int idx = value.indexOf("]");
+        if (idx== -1){return "";}
+        return value.substring(idx).replaceAll("\\]","");
+    }
+    public String indexValue()
+    {
+        int idx1 = value.indexOf("[");
+        if (idx1== -1){return "";}
+        int idx2 = value.indexOf("]");
+        if (idx2== -1){return "";}
+        return value.substring(idx1,idx2+1);
+    }
+
     public boolean isArray()
     {
         return value.contains("[")&&value.contains("]");

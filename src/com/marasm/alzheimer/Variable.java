@@ -2,6 +2,8 @@ package com.marasm.alzheimer;
 
 import com.marasm.alzheimer.Types.NumberType;
 
+import java.math.BigDecimal;
+
 /**
  * Created by SR3u on 11.02.2016.
  */
@@ -24,10 +26,21 @@ public class Variable
         ars=ars.replace("]","");
         return ars;
     }
+    public String arrayIndex()
+    {
+        String arraySize=arraySize();
+        BigDecimal res=new BigDecimal(arraySize);
+        res=res.subtract(BigDecimal.ONE);
+        return ""+res;
+    }
     public String nameWithoutIndex()
     {
         int idx = name.indexOf("[");
         if (idx== -1){return name;}
         return name.substring(0,idx);
+    }
+    public String nameBeforeFirstDot()
+    {
+        return "";
     }
 }

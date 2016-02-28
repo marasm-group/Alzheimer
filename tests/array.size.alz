@@ -2,6 +2,23 @@ var array[10] :number;
 for var i=0; less(i 3); i=add(i 1);
 	test(array);
 endfor
+type :Point # point on screen
+	:number x y
+end
+type :Size # size on screen
+	:number	w h
+end
+type :Rect # rectangle on screen
+	:Point origin
+	:Size size
+end
+var points[3] :Point
+testTypes(points);
+
+fun: testTypes(a[3] :Rect)
+	asm: print a.size; end
+end
+
 fun: test(a[10])
 	asm: print a.size; end
 	for var i=0; less(i a.size); i=add(i 1);

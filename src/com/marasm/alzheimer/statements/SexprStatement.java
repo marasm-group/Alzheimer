@@ -48,7 +48,18 @@ public class SexprStatement extends Statement
                 v=Alzheimer.variables.get(result.valueWithoutIndex());
                 if(v==null){
                     throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
-                res.addAll(v.type.pop(result.value));
+                String rest=result.valueAfterIndex();
+                if(rest.length()<=0) {
+                    res.addAll(v.type.pop(result.value));
+                }
+                else
+                {
+                    String realName=result.valueWithoutIndex()+result.valueAfterIndex()+"["+v.arraySize()+"]";
+                    Variable real=Alzheimer.variables.get(realName);
+                    if(real==null){
+                        throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
+                    res.addAll(real.type.pop(real.nameWithoutIndex()+"["+real.arrayIndex()+"]"));
+                }
             }
             else
             {
