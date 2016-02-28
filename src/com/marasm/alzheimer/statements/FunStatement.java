@@ -82,10 +82,7 @@ public class FunStatement extends Statement
             Variable v=allParams.pop();
             if(v.isArray)
             {
-                for(int i=v.arraySize()-1;i>=0;i--)
-                {
-                    res.addAll(v.type.pop(v.nameWithoutIndex()+"["+i+"]"));
-                }
+                res.addAll(SexprStatement.popArray(v,tmp.file,tmp.line));
             }
             else{res.addAll(v.type.pop(v.name));}
         }
@@ -103,6 +100,15 @@ public class FunStatement extends Statement
             var.isArray=VarStatement.isArray(p);
             var.name=p;
             Alzheimer.variables.put(var.nameWithoutIndex(),var);
+            if(var.isArray)
+            {
+                Variable varsize=new Variable();
+                varsize.isArray=false;
+                varsize.name=var.nameWithoutIndex()+".size";
+                varsize.type= new NumberType();
+                res.addAll(varsize.type.allocate(varsize.nameWithoutIndex()));
+                Alzheimer.variables.put(varsize.name,varsize);
+            }
             allParams.push(var);
         }
     }

@@ -2,6 +2,7 @@ package com.marasm.alzheimer.statements;
 
 import com.marasm.alzheimer.*;
 import com.marasm.alzheimer.Compiler;
+import com.marasm.alzheimer.Types.NumberType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,12 @@ public class VarStatement extends Statement
             tk.line=tokens.get(0).line;
             tokens.add(tk);
         }
+        else
+        {
+            if(_tokens.size()>0) {
+                if(_tokens.get(0).value.equals(";")){_tokens.remove(0);}
+            }
+        }
     }
     @Override
     public ArrayList<String> compile(Compiler compiler)throws Exception
@@ -60,8 +67,31 @@ public class VarStatement extends Statement
             if(compiler.globalScope){
                 res.addAll(T.gallocate(v));
                 Alzheimer.globalVariables.put(var.nameWithoutIndex(),var);
+                if(var.isArray)
+                {
+                    Variable varsize=new Variable();
+                    varsize.isArray=false;
+                    varsize.name=var.nameWithoutIndex()+".size";
+                    varsize.type= new NumberType();
+                    res.addAll(varsize.type.gallocate(varsize.nameWithoutIndex()));
+                    Alzheimer.variables.put(varsize.name,varsize);
+                    exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);
+                }
             }
-            else{res.addAll(T.allocate(v));}
+            else
+            {
+                res.addAll(T.allocate(v));
+                if(var.isArray)
+                {
+                    Variable varsize=new Variable();
+                    varsize.isArray=false;
+                    varsize.name=var.nameWithoutIndex()+".size";
+                    varsize.type= new NumberType();
+                    res.addAll(varsize.type.allocate(varsize.nameWithoutIndex()));
+                    Alzheimer.variables.put(varsize.name,varsize);
+                    exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);
+                }
+            }
             Alzheimer.variables.put(var.nameWithoutIndex(),var);
         }
         return res;

@@ -24,6 +24,10 @@ var b,c,d :number # declare 3 numeric variables
 # var <v1>[<n>],<v2>[<m>] :number # creates <v1> numeric array of <n> elements
 #                                 # and <v2> numeric array of <m> elements
 # to use i'th element of array <array>[i]
+# also every time you create array, array.size variable creates
+# it stores array size (obviously)
+
+var myAwesomeArray[100] :number # myAwesomeArray.size=100
 
 # built-in types: 
 # :number

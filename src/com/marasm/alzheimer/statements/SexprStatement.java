@@ -12,7 +12,6 @@ public class SexprStatement extends Statement
 {
     //static String A="__ALZ_A";
     //static String B="__ALZ_B";
-
     public SexprStatement(ArrayList<Token> _tokens)
     {
         this(_tokens,";");
@@ -55,10 +54,7 @@ public class SexprStatement extends Statement
             {
                 if(v.isArray)
                 {
-                    for(int i=v.arraySize()-1;i>=0;i--)
-                    {
-                        res.addAll(v.type.pop(v.nameWithoutIndex()+"["+i+"]"));
-                    }
+                    res.addAll(popArray(v,result.file,result.line));
                 }
                 else{res.addAll(v.type.pop(result.value));}
             }
@@ -177,7 +173,7 @@ public class SexprStatement extends Statement
         }
         return res+";";
     }
-    private ArrayList<String> pushVariable(Token t) throws Exception
+    static private ArrayList<String> pushVariable(Token t) throws CompilerException
     {
         ArrayList<String> res=new ArrayList<>();
         Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
@@ -187,13 +183,64 @@ public class SexprStatement extends Statement
             exec("push "+t.value+";",res);
         }else {
             if (v.isArray && !t.isArray()) {
-                for (int i = 0; i < v.arraySize(); i++) {
-                    res.addAll(v.type.push(v.nameWithoutIndex() + "[" + i + "]"));
-                }
+                res.addAll(pushArray(v,t.file,t.line));
             } else {
                 res.addAll(v.type.push(t.value));
             }
         }
+        return res;
+    }
+    static ArrayList<String> pushArray(Variable v,String fileName,long line) throws CompilerException
+    {
+        ArrayList<String> res=new ArrayList<>();
+        Tokenizer t=new Tokenizer();
+        String code1="" +
+                "#push array\n" +
+                "for var __ALZ_I=0; less(__ALZ_I "+v.nameWithoutIndex()+".size); __ALZ_I=add(__ALZ_I 1);\n";
+        String code2="" +
+                "endfor\n" +
+                "asm:\n" +
+                "\tpush "+v.nameWithoutIndex()+".size ;\n" +
+                "end";
+        ArrayList<Token> tokens1=t.tokenize(code1);
+        ArrayList<Token> tokens2=t.tokenize(code2);
+        Compiler c=new Compiler();
+        try {
+            res.addAll(c.compile(tokens1,false));
+            res.addAll(v.type.push(v.nameWithoutIndex()+"[__ALZ_I]"));
+            res.addAll(c.compile(tokens2,false));
+        } catch (Exception e) {
+            CompilerException ex=new CompilerException("failed to push array "+v.nameWithoutIndex(),fileName,line);
+            ex.initCause(e);
+            throw ex;
+        }
+        exec("delv __ALZ_I ;",res);
+        return res;
+    }
+    static ArrayList<String> popArray(Variable v,String fileName,long line) throws CompilerException
+    {
+        ArrayList<String> res=new ArrayList<>();
+        Tokenizer t=new Tokenizer();
+        String code1="" +
+                "#pop array\n" +
+                "asm:\n" +
+                "\tpop "+v.nameWithoutIndex()+".size ;\n" +
+                "end\n" +
+                "for var __ALZ_I=sub("+v.nameWithoutIndex()+".size 1); moreeq(__ALZ_I 0); __ALZ_I=sub(__ALZ_I 1);\n";
+        String code2="endfor\n";
+        ArrayList<Token> tokens1=t.tokenize(code1);
+        ArrayList<Token> tokens2=t.tokenize(code2);
+        Compiler c=new Compiler();
+        try {
+            res.addAll(c.compile(tokens1,false));
+            res.addAll(v.type.pop(v.nameWithoutIndex()+"[__ALZ_I]"));
+            res.addAll(c.compile(tokens2,false));
+        } catch (Exception e) {
+            CompilerException ex=new CompilerException("failed to pop array "+v.nameWithoutIndex(),fileName,line);
+            ex.initCause(e);
+            throw ex;
+        }
+        exec("delv __ALZ_I ;",res);
         return res;
     }
 }

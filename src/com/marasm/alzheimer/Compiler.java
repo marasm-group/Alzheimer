@@ -29,8 +29,8 @@ public class Compiler
             }
         }
     }
-
-    public ArrayList<String> compile(ArrayList<Token> tokens) throws  Exception
+    public ArrayList<String> compile(ArrayList<Token> tokens) throws  Exception{return compile(tokens,true);}
+    public ArrayList<String> compile(ArrayList<Token> tokens,boolean addHeader) throws  Exception
     {
         try{
             ArrayList<String>cpuCode=new ArrayList<>();
@@ -53,16 +53,18 @@ public class Compiler
                 }
                 cpuCode=res;
             }
-            exec_begin(";;; Alzheimer generated code ;;;",cpuCode);
-            exec_begin("#json\n" +
-                    "{\n" +
-                    "\"author\":\""+author+"\",\n" +
-                    "\"dependencies\":["+dependenciesStr()+"],\n" +
-                    "\"compiler\":\"Alzheimer\",\n" +
-                    "\"Alzheimer\":" +alzheimerStr()+"\n"+
-                    "}\n" +
-                    "#end",cpuCode);
-            exec("halt 0 ; end of code generation",cpuCode);
+            if(addHeader) {
+                exec_begin(";;; Alzheimer generated code ;;;", cpuCode);
+                exec_begin("#json\n" +
+                        "{\n" +
+                        "\"author\":\"" + author + "\",\n" +
+                        "\"dependencies\":[" + dependenciesStr() + "],\n" +
+                        "\"compiler\":\"Alzheimer\",\n" +
+                        "\"Alzheimer\":" + alzheimerStr() + "\n" +
+                        "}\n" +
+                        "#end", cpuCode);
+                exec("halt 0 ; end of code generation", cpuCode);
+            }
             return cpuCode;
         }
         catch (CompilerException ce)

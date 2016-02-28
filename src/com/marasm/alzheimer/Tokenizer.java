@@ -1,9 +1,7 @@
 package com.marasm.alzheimer;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,16 @@ public class Tokenizer
 {
     ArrayList<Token> tokens;
     int line=0;
+    String fileName="Unknown";
     public ArrayList<Token> tokenize(File _file) throws FileNotFoundException, CompilerException {
+        fileName=_file.getName();
         FileReader file=new FileReader(_file);
+        return tokenize(file);
+    }
+    public ArrayList<Token> tokenize(InputStreamReader file) throws CompilerException {
+
         tokens=new ArrayList<>();
-        String fileName=_file.getName();
+
         line=0;
         try {
             String chr=readChar(file);
@@ -38,13 +42,18 @@ public class Tokenizer
         }
         return tokens;
     }
-    String readChar(FileReader file) throws IOException {
+    public ArrayList<Token> tokenize(String str) throws CompilerException {
+        InputStream stream = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+        InputStreamReader reader=new InputStreamReader(stream);
+        return tokenize(reader);
+    }
+    String readChar(InputStreamReader file) throws IOException {
         int chr = file.read();
         if(chr==-1){return null;}
         String chrstr = Character.toString((char) chr);
         return chrstr;
     }
-    Token processCharacter(String chr,FileReader file,String fileName,Token t) throws IOException, CompilerException {
+    Token processCharacter(String chr, InputStreamReader file, String fileName, Token t) throws IOException, CompilerException {
         if(chr.equals("#"))
         {
             while(!chr.equals("\n")){
