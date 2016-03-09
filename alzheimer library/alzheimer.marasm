@@ -12,61 +12,79 @@ gvar False
 mov True 1
 mov False 0
 ret
-@__ALZ_ret_true
-push 1
-ret
-@__ALZ_ret_false
-push 0
-ret
 $more
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_A __ALZ_B
-jmz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jmz __ALZ_A @__ALZ_more_ret_true
+push False
+ret
+@__ALZ_more_ret_true
+push True
+ret
 $less
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_B __ALZ_A
-jmz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jmz __ALZ_A @__ALZ_less_ret_true
+push False
+ret
+@__ALZ_less_ret_true
+push True
+ret
 $moreeq
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_A __ALZ_B
-jmz __ALZ_A @__ALZ_ret_true
-jz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jmz __ALZ_A @__ALZ_moreeq_ret_true
+jz __ALZ_A @__ALZ_moreeq_ret_true
+push False
+ret
+@__ALZ_moreeq_ret_true
+push True
+ret
 $lesseq
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_B __ALZ_A
-jmz __ALZ_A @__ALZ_ret_true
-jz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jmz __ALZ_A @__ALZ_lesseq_ret_true
+jz __ALZ_A @__ALZ_lesseq_ret_true
+push False
+ret
+@__ALZ_lesseq_ret_true
+push True
+ret
 $eq
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_B __ALZ_A
-jz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jz __ALZ_A @__ALZ_eq_ret_true
+push False
+ret
+@__ALZ_eq_ret_true
+push True
+ret
 $neq
 var __ALZ_A
 var __ALZ_B
 pop __ALZ_B
 pop __ALZ_A
 sub __ALZ_A __ALZ_B __ALZ_A
-jnz __ALZ_A @__ALZ_ret_true
-jmp @__ALZ_ret_false
+jnz __ALZ_A @__ALZ_neq_ret_true
+push False
+ret
+@__ALZ_neq_ret_true
+push True
+ret
 halt -1 ;
 halt 0 ; end of code generation
