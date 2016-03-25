@@ -1,1 +1,2 @@
-var array[add(10 20)] :number;
+var array[ add(10 20)][30] :number;
+array[3]=0;

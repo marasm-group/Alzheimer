@@ -102,16 +102,20 @@ public class Tokenizer
         }
         if(chr.equals("["))
         {
-            t.value+=chr;
-            chr=readChar(file);
-            t.value+=chr;
-            while(!chr.equals("]"))
+            while (chr.equals("["))
             {
-                chr=readChar(file);
-                if(chr==null){return null;}
                 t.value+=chr;
+                while(!chr.equals("]"))
+                {
+                    chr=readChar(file);
+                    if(chr==null){return null;}
+                    t.value+=chr;
+                }
+                chr=readChar(file);
             }
             t=addToken(t,fileName,line);
+            t.value+=chr;
+            if(chr.equals("=")){t=addToken(t,fileName,line);}
             return t;
         }
         if(chr.equals("\""))
@@ -141,6 +145,7 @@ public class Tokenizer
     }
     public Token addToken(Token t,String file,long line)
     {
+        t.value=t.value.trim();
         if(t.value.length()==0){return t;}
         t.line=line;
         t.file=file;

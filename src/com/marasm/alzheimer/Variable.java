@@ -16,15 +16,20 @@ public class Variable
     {
         int idx = name.indexOf("[");
         if (idx== -1){return "0";}
+        String[] sizes=arraySizeArr(name);
+        return sizes[0];
+    }
+    public static String[] arraySizeArr(String name)
+    {
+        int idx = name.indexOf("[");
+        if (idx== -1){return new String[]{"0"};}
         String ars="0";
-        ars=name.substring(idx);
+        ars=name.substring(idx+1);
         idx = ars.lastIndexOf("]");
         if (idx== -1){
-            System.out.println("No ']' found for '['");return "0";}
+            System.out.println("No ']' found for '['");return new String[]{"0"};}
         ars=ars.substring(0,idx).trim();
-        ars=ars.replace("[","");
-        ars=ars.replace("]","");
-        return ars;
+        return ars.split("\\]\\[");
     }
     public String arrayIndex()
     {
