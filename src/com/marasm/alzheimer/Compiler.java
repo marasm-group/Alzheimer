@@ -1,6 +1,7 @@
 package com.marasm.alzheimer;
 
 import com.marasm.alzheimer.Types.CustomType;
+import com.marasm.alzheimer.Types.NumberType;
 import com.marasm.alzheimer.statements.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -111,9 +112,9 @@ public class Compiler
                         break;
                     case "end":
                         exec("ret",cpuCode);
-                        if(Alzheimer.variablesStack.size()<=0){
+                        if(!Alzheimer.variables.inFun()) {
                             throw new CompilerException("end without fun:",t.file,t.line);}
-                        Alzheimer.variables=Alzheimer.variablesStack.pop();
+                        Alzheimer.variables.pop();
                         globalScope=true;
                         break;
                     case "return":

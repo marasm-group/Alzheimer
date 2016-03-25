@@ -7,6 +7,16 @@ import java.util.ArrayList;
  */
 public class Type
 {
+    public ArrayList<String> allocate(String name,boolean global)
+    {
+        if(global){return gallocate(name);}
+        else{return allocate(name);}
+    }
+    public ArrayList<String> deallocate(String name,boolean global)
+    {
+        if(global){return gdeallocate(name);}
+        else{return deallocate(name);}
+    }
     public ArrayList<String> allocate(String name){return new ArrayList<>();}
     public ArrayList<String> deallocate(String name){return new ArrayList<>();}
     public ArrayList<String> gallocate(String name){return new ArrayList<>();}

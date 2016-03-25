@@ -69,13 +69,13 @@ public class CustomType extends Type
             String varname=getVarName(name,i);
             Variable v=new Variable();
             v.name=varname;
-            Alzheimer.variables.put(varname,v);
+            Alzheimer.variables.add(varname,v);
             res.addAll(t.allocate(varname));
         }
         Variable v=new Variable();
         v.name=name;
         v.type=this;
-        Alzheimer.variables.put(name,v);
+        Alzheimer.variables.add(name,v);
         return res;
     }
     public ArrayList<String> gallocate(String name)
@@ -87,13 +87,13 @@ public class CustomType extends Type
             String varname=getVarName(name,i);
             Variable v=new Variable();
             v.name=varname;
-            Alzheimer.variables.put(varname,v);
+            Alzheimer.variables.addGlobal(varname,v);
             res.addAll(t.gallocate(varname));
         }
         Variable v=new Variable();
         v.name=name;
         v.type=this;
-        Alzheimer.variables.put(name,v);
+        Alzheimer.variables.addGlobal(name,v);
         return res;
     }
     public ArrayList<String> deallocate(String name)
@@ -120,7 +120,7 @@ public class CustomType extends Type
             String varname=getVarName(name,i);
             Variable v=new Variable();
             v.name=varname;
-            Alzheimer.variables.remove(varname);
+            Alzheimer.variables.removeGlobal(varname);
             res.addAll(t.gdeallocate(varname));
         }
         Alzheimer.variables.remove(name);

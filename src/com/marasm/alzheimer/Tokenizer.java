@@ -100,6 +100,20 @@ public class Tokenizer
             t=addToken(t,fileName,line);
             return t;
         }
+        if(chr.equals("["))
+        {
+            t.value+=chr;
+            chr=readChar(file);
+            t.value+=chr;
+            while(!chr.equals("]"))
+            {
+                chr=readChar(file);
+                if(chr==null){return null;}
+                t.value+=chr;
+            }
+            t=addToken(t,fileName,line);
+            return t;
+        }
         if(chr.equals("\""))
         {
             t=addToken(t,fileName,line);

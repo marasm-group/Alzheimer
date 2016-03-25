@@ -31,7 +31,12 @@ public class Alzheimer
     static public boolean LogCPUInstructions=false;
     static public boolean trimMarasmComments=true;
 
-    static public Map<String,Variable> variables=new HashMap<>();
-    static public Map<String,Variable> globalVariables=new HashMap<>();
-    static public Stack<Map<String,Variable>> variablesStack=new Stack<>();
+    static public Variables variables=new Variables();
+
+    static public ArrayList<String> compile(String code) throws Exception
+    {
+        Tokenizer t=new Tokenizer();
+        Compiler c=new Compiler();
+        return c.compile(t.tokenize(code),false);
+    }
 }

@@ -33,9 +33,7 @@ public class FunStatement extends Statement
     Stack<Variable> allParams=new Stack<>();
     public ArrayList<String> compile(com.marasm.alzheimer.Compiler compiler) throws Exception
     {
-        Alzheimer.variablesStack.push(Alzheimer.variables);
-        Alzheimer.variables=new HashMap<>();
-        Alzheimer.variables.putAll(Alzheimer.globalVariables);
+        Alzheimer.variables.push();
         ArrayList<String>res=new ArrayList<>();
         exec("halt 0",res);
         exec("$"+tokens.remove(0).value,res);
@@ -99,7 +97,7 @@ public class FunStatement extends Statement
             var.type=T;
             var.isArray=VarStatement.isArray(p);
             var.name=p;
-            Alzheimer.variables.put(var.nameWithoutIndex(),var);
+            Alzheimer.variables.add(var.nameWithoutIndex(),var);
             if(var.isArray)
             {
                 Variable varsize=new Variable();
@@ -107,7 +105,7 @@ public class FunStatement extends Statement
                 varsize.name=var.nameWithoutIndex()+".size";
                 varsize.type= new NumberType();
                 res.addAll(varsize.type.allocate(varsize.nameWithoutIndex()));
-                Alzheimer.variables.put(varsize.name,varsize);
+                Alzheimer.variables.add(varsize.name,varsize);
             }
             allParams.push(var);
         }

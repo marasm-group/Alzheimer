@@ -64,35 +64,25 @@ public class VarStatement extends Statement
             if(T==null){throw new CompilerException("Unknown type "+this.type+"!",typeToken.file,typeToken.line);}
             var.isArray=isArray(v);
             var.name=v;
+            if(Alzheimer.variables.exists(v))
+            {
+                throw new CompilerException("Redeclaration of variable '"+v+"'",typeToken.file,typeToken.line);
+            }
             if(compiler.globalScope){
-                res.addAll(T.gallocate(v));
-                Alzheimer.globalVariables.put(var.nameWithoutIndex(),var);
+                Alzheimer.variables.addGlobal(var.nameWithoutIndex(),var);
                 if(var.isArray)
                 {
-                    Variable varsize=new Variable();
-                    varsize.isArray=false;
-                    varsize.name=var.nameWithoutIndex()+".size";
-                    varsize.type= new NumberType();
-                    res.addAll(varsize.type.gallocate(varsize.nameWithoutIndex()));
-                    Alzheimer.variables.put(varsize.name,varsize);
-                    exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);
-                }
+                    allocateArray(res,T,var,true);
+                }else{res.addAll(T.gallocate(v));}
             }
             else
             {
-                res.addAll(T.allocate(v));
                 if(var.isArray)
                 {
-                    Variable varsize=new Variable();
-                    varsize.isArray=false;
-                    varsize.name=var.nameWithoutIndex()+".size";
-                    varsize.type= new NumberType();
-                    res.addAll(varsize.type.allocate(varsize.nameWithoutIndex()));
-                    Alzheimer.variables.put(varsize.name,varsize);
-                    exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);
-                }
+                    allocateArray(res,T,var,false);
+                }else{res.addAll(T.allocate(v));}
             }
-            Alzheimer.variables.put(var.nameWithoutIndex(),var);
+            Alzheimer.variables.add(var.nameWithoutIndex(),var);
         }
         return res;
     }
@@ -100,5 +90,16 @@ public class VarStatement extends Statement
     public static boolean isArray(String v)
     {
         return (v.contains("[")&&v.contains("]"));
+    }
+    void allocateArray(ArrayList<String>res,Type T,Variable var,boolean global) throws Exception
+    {
+        String varsizename=var.nameWithoutIndex()+".size";
+        //res.addAll(varsize.type.allocate(varsize.nameWithoutIndex(),global));
+        //Alzheimer.variables.add(varsize.name,varsize);
+        String alz="var "+varsizename+" :number ;\n" +
+                ""+varsizename+"=( "+ var.arraySize()+" );\n";
+        res.addAll(Alzheimer.compile(alz));
+        //exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);
+        res.addAll(T.allocate(var.nameWithoutIndex()+"["+varsizename+"]",global));
     }
 }

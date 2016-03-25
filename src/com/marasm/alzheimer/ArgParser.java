@@ -25,6 +25,7 @@ public class ArgParser {
         options.addOption("help",false,"print help");
         options.addOption("mvmHome",true,"set custom mvm home directory");
         options.addOption("noTrim",false,"disable comments trimming in generated code (may be used for debugging purposes)");
+        options.addOption("echo",false,"print marasm code to stdout");
         dontCompile = false;
         this.args=args;
     }
@@ -90,6 +91,10 @@ public class ArgParser {
         if(cmd.hasOption("noTrim"))
         {
             Alzheimer.trimMarasmComments=false;
+        }
+        if(cmd.hasOption("echo"))
+        {
+            Alzheimer.LogCPUInstructions=true;
         }
 
     }
