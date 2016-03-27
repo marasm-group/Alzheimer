@@ -33,10 +33,11 @@ public class Variable
     }
     public String arrayIndex()
     {
-        String arraySize=arraySize();
+        /*String arraySize=arraySize();
         BigDecimal res=new BigDecimal(arraySize);
         res=res.subtract(BigDecimal.ONE);
-        return ""+res;
+        return ""+res;*/
+        return arraySize();
     }
     public String nameWithoutIndex()
     {

@@ -81,7 +81,8 @@ public class FunStatement extends Statement
             Variable v=allParams.pop();
             if(v.isArray)
             {
-                res.addAll(SexprStatement.popArray(v,tmp.file,tmp.line));
+                //res.add("push "+v.sizeVarName()+";");
+                res.addAll(SexprStatement.popArray(v,tmp.file,tmp.line,true));
             }
             else{res.addAll(v.type.pop(v.name));}
         }

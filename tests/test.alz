@@ -1,6 +1,13 @@
 var array[add(10 20)] :number;
-array[3]=0;
-
-fun: test(a[add(10 20)])
-	a[add(1 2)]=3;
+array[0]=-1;
+array[1]=-2;
+array[2]=-3;
+array[add(1 2)]=1000;
+asm: print array[3]; end
+test(array);
+fun: test(a[])		
+	asm: print a[3]; end
+	var c;
+	c=a[add(1 2)];	
+	asm: print c a[0] a[1] a[2] a[3] a[4]; end
 end

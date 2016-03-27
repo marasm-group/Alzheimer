@@ -50,7 +50,11 @@ public class SexprStatement extends Statement
                     throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
                 String rest=result.valueAfterIndex();
                 if(rest.length()<=0) {
-                    res.addAll(v.type.pop(result.value));
+                    Variable tmp=new Variable();
+                    tmp.name=result.value;
+                    String alz=""+v.accessVarName()+"=( "+tmp.arrayIndex()+" );\n";
+                    res.addAll(Alzheimer.compile(alz));
+                    res.addAll(v.type.pop(v.nameWithoutIndex()+"["+v.accessVarName()+"]"));
                 }
                 else
                 {
@@ -58,7 +62,11 @@ public class SexprStatement extends Statement
                     Variable real=Alzheimer.variables.get(realName);
                     if(real==null){
                         throw new CompilerException("Unknown variable "+result.value,result.file,result.line);}
-                    res.addAll(real.type.pop(real.nameWithoutIndex()+"["+real.arrayIndex()+"]"));
+                    Variable tmp=new Variable();
+                    tmp.name=result.value;
+                    String alz=""+real.accessVarName()+"=( "+tmp.arrayIndex()+" );\n";
+                    res.addAll(Alzheimer.compile(alz));
+                    res.addAll(real.type.pop(real.nameWithoutIndex()+"["+real.accessVarName()+"]"));
                 }
             }
             else
@@ -81,12 +89,12 @@ public class SexprStatement extends Statement
         Token opTok=tokens.remove(0);
         if(tokens.size()<1)
         {
-            Variable v=Alzheimer.variables.get(opTok.value);
+            Variable v=Alzheimer.variables.get(opTok.valueWithoutIndex());
             if(v==null)
             {
                 if(!opTok.isNumber())
                 {
-                    throw  new CompilerException("Number or variable expected",opTok.file,opTok.line);
+                    throw new CompilerException("Number or variable expected", opTok.file, opTok.line);
                 }
                 res.add("push "+opTok.value+";");
                 return res;
@@ -184,7 +192,7 @@ public class SexprStatement extends Statement
         }
         return res+";";
     }
-    static private ArrayList<String> pushVariable(Token t) throws CompilerException
+    static private ArrayList<String> pushVariable(Token t) throws Exception
     {
         ArrayList<String> res=new ArrayList<>();
         Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
@@ -196,7 +204,17 @@ public class SexprStatement extends Statement
             if (v.isArray && !t.isArray()) {
                 res.addAll(pushArray(v,t.file,t.line));
             } else {
-                res.addAll(v.type.push(t.value));
+                if(t.isArray())
+                {
+                    v=new Variable();
+                    v.name=t.value;
+                    String alz=""+v.accessVarName()+"=( "+v.arrayIndex()+" );\n";
+                    res.addAll(Alzheimer.compile(alz));
+                    res.addAll(v.type.push(v.nameWithoutIndex()+"["+v.accessVarName()+"]"));
+                }
+                else {
+                    res.addAll(v.type.push(t.value));
+                }
             }
         }
         return res;
@@ -230,13 +248,19 @@ public class SexprStatement extends Statement
     }
     static ArrayList<String> popArray(Variable v,String fileName,long line) throws CompilerException
     {
+        return popArray(v,fileName,line,false);
+    }
+    static ArrayList<String> popArray(Variable v,String fileName,long line,boolean sizeKnown) throws CompilerException
+    {
         ArrayList<String> res=new ArrayList<>();
         Tokenizer t=new Tokenizer();
-        String code1="#pop array\n" +
-                "asm:\n" +
-                "\tpop "+v.sizeVarName()+" ;\n" +
-                "end\n" +
-                "for var __ALZ_I=sub("+v.nameWithoutIndex()+".size 1); moreeq(__ALZ_I 0); __ALZ_I=sub(__ALZ_I 1);\n";
+        String code1="#pop array\n";
+        if(!sizeKnown) {
+            code1+="asm:\n" +
+                  "\tpop " + v.sizeVarName() + " ;\n" +
+                  "end\n";
+        }
+        code1+="for var __ALZ_I=sub("+v.sizeVarName()+" 1); moreeq(__ALZ_I 0); __ALZ_I=sub(__ALZ_I 1);\n";
         String code2="endfor\n";
         ArrayList<Token> tokens1=t.tokenize(code1);
         ArrayList<Token> tokens2=t.tokenize(code2);
