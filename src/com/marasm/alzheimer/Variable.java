@@ -44,6 +44,8 @@ public class Variable
         if (idx== -1){return name;}
         return name.substring(0,idx);
     }
+    public String sizeVarName(){return nameWithoutIndex()+".size";}
+    public String accessVarName(){return nameWithoutIndex()+".access";}
     public String nameBeforeFirstDot()
     {
         return "";

@@ -91,12 +91,13 @@ public class VarStatement extends Statement
     {
         return (v.contains("[")&&v.contains("]"));
     }
-    void allocateArray(ArrayList<String>res,Type T,Variable var,boolean global) throws Exception
+    static void allocateArray(ArrayList<String>res,Type T,Variable var,boolean global) throws Exception
     {
-        String varsizename=var.nameWithoutIndex()+".size";
+        String varsizename=var.sizeVarName();
+        String varAccessName=var.accessVarName();
         //res.addAll(varsize.type.allocate(varsize.nameWithoutIndex(),global));
         //Alzheimer.variables.add(varsize.name,varsize);
-        String alz="var "+varsizename+" :number ;\n" +
+        String alz="var "+varsizename+" "+varAccessName+" :number ;\n" +
                 ""+varsizename+"=( "+ var.arraySize()+" );\n";
         res.addAll(Alzheimer.compile(alz));
         //exec("mov "+varsize.nameWithoutIndex()+" "+var.arraySize(),res);

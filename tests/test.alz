@@ -1,2 +1,6 @@
-var array[ add(10 20)][30] :number;
+var array[add(10 20)] :number;
 array[3]=0;
+
+fun: test(a[add(10 20)])
+	a[add(1 2)]=3;
+end

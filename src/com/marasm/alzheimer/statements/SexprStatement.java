@@ -205,9 +205,9 @@ public class SexprStatement extends Statement
     {
         ArrayList<String> res=new ArrayList<>();
         Tokenizer t=new Tokenizer();
-        String code1="" +
+        String code1=""+
                 "#push array\n" +
-                "for var __ALZ_I=0; less(__ALZ_I "+v.nameWithoutIndex()+".size); __ALZ_I=add(__ALZ_I 1);\n";
+                "for var __ALZ_I=0; less(__ALZ_I "+v.sizeVarName()+"); __ALZ_I=add(__ALZ_I 1);\n";
         String code2="" +
                 "endfor\n" +
                 "asm:\n" +
@@ -232,10 +232,9 @@ public class SexprStatement extends Statement
     {
         ArrayList<String> res=new ArrayList<>();
         Tokenizer t=new Tokenizer();
-        String code1="" +
-                "#pop array\n" +
+        String code1="#pop array\n" +
                 "asm:\n" +
-                "\tpop "+v.nameWithoutIndex()+".size ;\n" +
+                "\tpop "+v.sizeVarName()+" ;\n" +
                 "end\n" +
                 "for var __ALZ_I=sub("+v.nameWithoutIndex()+".size 1); moreeq(__ALZ_I 0); __ALZ_I=sub(__ALZ_I 1);\n";
         String code2="endfor\n";

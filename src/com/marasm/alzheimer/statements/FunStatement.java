@@ -6,6 +6,7 @@ import com.marasm.alzheimer.Types.NumberType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by SR3u on 08.02.2016.
@@ -86,13 +87,12 @@ public class FunStatement extends Statement
         }
         return res;
     }
-    void commitParams(ArrayList<String>params,String type,ArrayList<String>res)
+    void commitParams(ArrayList<String>params,String type,ArrayList<String>res) throws Exception
     {
         Type T= Alzheimer.types.get(type);
         while(params.size()>0)
         {
             String p=params.remove(0);
-            res.addAll(T.allocate(p));
             Variable var=new Variable();
             var.type=T;
             var.isArray=VarStatement.isArray(p);
@@ -100,13 +100,8 @@ public class FunStatement extends Statement
             Alzheimer.variables.add(var.nameWithoutIndex(),var);
             if(var.isArray)
             {
-                Variable varsize=new Variable();
-                varsize.isArray=false;
-                varsize.name=var.nameWithoutIndex()+".size";
-                varsize.type= new NumberType();
-                res.addAll(varsize.type.allocate(varsize.nameWithoutIndex()));
-                Alzheimer.variables.add(varsize.name,varsize);
-            }
+                VarStatement.allocateArray(res,var.type,var,false);
+            }else {res.addAll(T.allocate(p));}
             allParams.push(var);
         }
     }
