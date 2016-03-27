@@ -19,6 +19,6 @@ echo '#!/bin/bash' > './alzheimer.sh'
 echo "MVM_HOME=\"$MVM_HOME\"" >> './alzheimer.sh'
 echo 'MVM_Exec="$MVM_HOME"/Alzheimer.jar' >> './alzheimer.sh'
 echo 'java -jar $MVM_Exec "$@"' >> './alzheimer.sh'
-chmod 0777 './alzheimer.sh'
+chmod 0755 './alzheimer.sh'
 PWD=`pwd`
 ln -sf "$PWD/alzheimer.sh" "/usr/local/bin/alzheimer"
