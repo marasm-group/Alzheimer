@@ -101,7 +101,7 @@ public class Compiler
                         globalScope=gs;
                         break;
                     case "$:":
-                        cpuCode.addAll(new SexprStatement(tokens).compile(this));
+                        cpuCode.addAll(new SexprStatement(tokens,false).compile(this));
                         break;
                     case "asm:":
                         cpuCode.addAll(new AsmStatement(tokens).compile(this));
@@ -157,7 +157,7 @@ public class Compiler
             else
             {
                 tokens.add(0,t);
-                cpuCode.addAll(new SexprStatement(tokens).compile(this));
+                cpuCode.addAll(new SexprStatement(tokens,Alzheimer.useStackGuard).compile(this));
             }
         }
         return cpuCode;

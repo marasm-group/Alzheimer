@@ -27,10 +27,11 @@ public class Alzheimer
     static {
         types=new HashMap<>();
         types.put(":number",new NumberType());
+        types.put(":Number",new NumberType());
     }
     static public boolean LogCPUInstructions=false;
     static public boolean trimMarasmComments=true;
-
+    static public boolean useStackGuard = false;
     static public Variables variables=new Variables();
 
     static public ArrayList<String> compile(String code) throws Exception
