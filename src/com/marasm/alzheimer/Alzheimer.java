@@ -49,7 +49,7 @@ public class Alzheimer
         execBefore("in "+before+" 0.1",res);
         execBefore("var "+after,res);
         execBefore("var "+before,res);
-        execBefore("var "+dummy,res);
+        execBefore("var "+dummy+" ; stack guard initialization",res);
         String tag="@__ALZ_SG_"+stackguardLoops;
         String tagEnd="@__ALZ_SG_END_"+stackguardLoops;
         exec(tag+" ; stack guard loop",res);
