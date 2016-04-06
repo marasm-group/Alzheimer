@@ -1,21 +1,12 @@
-var aaa.size aaa[100] :number
-$: aaa.size=100;
-
-#push array
-for var i=0; less(i aaa.size); i=add(i 1);
-	asm:
-		push aaa[i] ;
-	end	
-endfor
-asm:
-	push aaa.size ;
+type :Point # point on screen
+	:number x y
 end
-#pop array
-asm:
-	pop aaa.size;
+type :Size # size on screen
+	:number	w h
 end
-for var i=sub(aaa.size 1); moreeq(i 0); i=sub(i 1);
-	asm:
-		pop aaa[i] ;
-	end	
-endfor
+type :Rect # rectangle on screen
+	:Point origin
+	:Size size
+end
+var a;
+a=:Rect.size;
