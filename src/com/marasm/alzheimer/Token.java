@@ -88,7 +88,16 @@ public class Token
         if (idx2== -1){return "";}
         return value.substring(idx1,idx2+1);
     }
-
+    public String valueBeforeFirstDot()
+    {
+        return value.split("\\.",2)[0];
+    }
+    public String valueAfterFirstDot()
+    {
+        String [] arr=value.split("\\.",2);
+        if(arr.length<2){return "";}
+        return arr[1];
+    }
     public boolean isArray()
     {
         return value.contains("[")&&value.contains("]");

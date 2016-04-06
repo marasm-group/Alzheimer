@@ -29,5 +29,6 @@ public class Type
         if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
         result.add(cmd + " ;");
     }
+    public long size() throws Exception {return 0;}
     public String[]fields=null;
 }

@@ -1,6 +1,7 @@
 package com.marasm.alzheimer.Types;
 
 import com.marasm.alzheimer.Alzheimer;
+import com.marasm.alzheimer.CompilerException;
 import com.marasm.alzheimer.Type;
 import com.marasm.alzheimer.Variable;
 import org.json.JSONArray;
@@ -177,6 +178,19 @@ public class CustomType extends Type
         String n=v.nameWithoutIndex();
         String idx=name.substring(n.length());
         return n+"."+i.name+idx;
+    }
+    public long size() throws Exception {
+        long res=0;
+        for(Field f : fields)
+        {
+            Type T=Alzheimer.types.get(f.type);
+            if(T==null)
+            {
+                throw new Exception("Unknown type +'"+f.type+"'");
+            }
+            res+=T.size();
+        }
+        return res;
     }
 
 }

@@ -104,11 +104,11 @@ public class SexprStatement extends Statement
         if(tokens.size()<1)
         {
             Variable v=Alzheimer.variables.get(opTok.valueWithoutIndex());
-            if(v==null)
+            if(v==null&&!opTok.isType())
             {
                 if(!opTok.isNumber())
                 {
-                    throw new CompilerException("Number or variable expected", opTok.file, opTok.line);
+                    throw new CompilerException("Number, variable or type property expected", opTok.file, opTok.line);
                 }
                 res.add("push "+opTok.value+";");
                 return res;
@@ -212,8 +212,34 @@ public class SexprStatement extends Statement
         Variable v=Alzheimer.variables.get(t.valueWithoutIndex());
         if(v==null){
             if (!t.isNumber()&&!t.isString()&&!t.isCharacter()){
-                throw new CompilerException("Unknown variable "+t.value,t.file,t.line);}
-            exec("push "+t.value+";",res);
+                if(!t.isType())
+                {
+                    throw new CompilerException("Unknown variable "+t.value,t.file,t.line);
+                }
+                else
+                {
+                    Type T=Alzheimer.types.get(t.valueBeforeFirstDot());
+                    if(T==null)
+                    {
+                        throw new CompilerException("Unknown type "+t.valueBeforeFirstDot(),t.file,t.line);
+                    }
+                    else
+                    {
+                        switch (t.valueAfterFirstDot())
+                        {
+                            case "size":
+                                exec("push "+T.size()+"; "+t.value,res);
+                                break;
+                            default:
+                                throw new CompilerException("Type '"+t.valueBeforeFirstDot()+"' does not have property '"+t.valueAfterFirstDot()+"' ",t.file,t.line);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                exec("push " + t.value + ";", res);
+            }
         }else {
             if (v.isArray && !t.isArray()) {
                 res.addAll(pushArray(v,t.file,t.line));

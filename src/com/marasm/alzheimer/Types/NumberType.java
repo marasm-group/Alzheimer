@@ -46,5 +46,6 @@ public class NumberType extends Type
         exec("pop "+name+" ;",res);
         return res;
     }
+    public long size(){return 1;}
 }
 
