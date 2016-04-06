@@ -1,4 +1,5 @@
-# types size test
+import "conio" "VEGA" "common"; # same as randsq, but uses for loops and modern syntax
+srand(1); # setup randu pseudorandom number generator
 
 type :Point # point on screen
 	:number x y
@@ -10,5 +11,44 @@ type :Rect # rectangle on screen
 	:Point origin
 	:Size size
 end
-var a;
-a=:Rect.size;
+
+putstr("VEGA manufacturer: ");
+putstr(reverseStack(VEGA_readManufacturer()));
+
+var grayscale :number
+grayscale=0;
+
+var rectangle :Rect # create and setup rectangle
+rectangle.size.w=10;
+rectangle.size.h=10;
+var color :number
+for rectangle.origin.y=0; less(rectangle.origin.y 480); rectangle.origin.y=add(rectangle.origin.y 10);
+	for rectangle.origin.x=0; less(rectangle.origin.x 640); rectangle.origin.x=add(rectangle.origin.x 10);	
+		if (grayscale):
+			color=rand();
+			color=sub(color floor(color));		
+			color=floor(mul(color 256));
+			color=color(color color color);
+		else
+			color=color(rand() rand() rand());
+		endif		
+		setColor(color);  # select random color
+		drawRect(rectangle); # draw rectangle		
+	endfor
+endfor
+
+fun: color(r g b :number) :number	# convert r g b color to VEGA color
+	return add(b add(mul(g 256) mul(r 65536)));
+end
+fun: srand(r :number) # setup randu pseudorandom number generator
+	gvar __RAND :number
+	__RAND=r;
+end
+fun: rand() :number	# return randu pseudorandom number
+	__RAND=mod(mul(65539 __RAND) 2147483648);
+	return div(__RAND 2147483.648);
+end
+fun: mod(a b :number) :number # Modulo operation
+	return sub(a mul(floor(div(a b)) b));
+end
+
