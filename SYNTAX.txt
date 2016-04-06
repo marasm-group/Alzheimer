@@ -37,13 +37,15 @@ var myAwesomeArray[100] :number # myAwesomeArray.size=100
 ##############
 
 # statements are much like s-expressions
-# each statement starts with $: and ends with ;
+foo(a,bar(b,c)));
+# if you start statement with $: it will be not checked for stack sanity
+# (stack sanity check is only performed if -stackGuard command line option is enabled)
 $: foo(a,bar(b,c)));
 # if you want to assign the result of statement 
 # you write <var>= after $: and put everything 
 # else (except ;) in brackets()
 $: a=(1);
-$: d=(foo(a bar(b c))));
+d=(foo(a bar(b c))));
 # there are some build-in functions:
 # add(a b) or +(a b) – addition
 # sub(a b) or -(a b) – subtraction
@@ -186,6 +188,8 @@ end
 var p :Point
 $: p.x=(1);
 $: p.y=(add(p.x 100));
+# also you can use Type.size in your code as a numeric constant
+a = :Point.size # a will store Point's size (2 on mvm)
 
 ###################################
 # low level code (asm: statement) #
