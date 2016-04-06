@@ -92,7 +92,7 @@ public class SexprStatement extends Statement
         //exec("delv "+A+" \n"+"delv "+B+" ; end of statement",res);
         if(useStackGuard)
         {
-            res=stackGuard(res);
+            res=Alzheimer.stackGuard(res);
         }
         return res;
     }
@@ -290,29 +290,5 @@ public class SexprStatement extends Statement
         }
         exec("delv __ALZ_I ;",res);
         return res;
-    }
-    static long stackguardLoops=0;
-    static ArrayList<String> stackGuard(ArrayList<String> res)
-    {
-        String before="__ALZ_SG_B";
-        String after="__ALZ_SG_A";
-        execBefore("in "+before+" 0.1",res);
-        execBefore("var "+after,res);
-        execBefore("var "+before,res);
-        String tag="@__ALZ_SG_"+stackguardLoops;
-        exec(tag+" ; Stack guard loop",res);
-        exec("pop "+after,res);
-        exec("in "+after+" 0.1",res);
-        exec("sub "+after+" "+after+" "+before,res);
-        exec("jmz "+after+" "+tag,res);
-        exec("delv "+before,res);
-        exec("delv "+after,res);
-        stackguardLoops++;
-        return res;
-    }
-    static void execBefore(String cmd,ArrayList<String> res)
-    {
-        res.add(0,cmd);
-        if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
     }
 }

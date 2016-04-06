@@ -19,13 +19,11 @@ public class Statement
     }
     protected static void exec(String cmd, Stack<String> result)
     {
-        if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
-        result.push(cmd+" ;");
+        Alzheimer.exec(cmd,result);
     }
     protected static void exec(String cmd, ArrayList<String> result)
     {
-        if(Alzheimer.LogCPUInstructions){System.out.println(cmd);}
-        result.add(cmd + " ;");
+        Alzheimer.exec(cmd,result);
     }
 
 }
