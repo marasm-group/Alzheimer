@@ -1,0 +1,139 @@
+##############################################
+##          Conway's Game of Life           ##
+##############################################
+# It's recommended to disable stack guard
+# because the performance is REALLY poor 
+import "conio" "VEGA";
+putstr("Game of Life (some sort of)");
+var sx sy; # field size
+sx=24; #####  24 x 24 (feel free to change)
+sy=24; #####
+srand(1);  # random seed (feel free to change)
+##############################################
+gvar cells[mul(sx sy)] :number;
+gvar prevCells[mul(sx sy)] :number;
+var x y :number;
+gvar alive dead :number;
+alive=color(255 255 255);
+dead=color(0 0 0);
+for y=0; less(y sy) ; y=add(y 1):
+	for x=0; less(x sx) ; x=add(x 1):						
+		cells[arrIdx(x y sx sy)]=randCell();
+	endfor
+endfor
+
+var rectangle :Rect ;# create and setup rectangle
+rectangle.size.w=10;
+rectangle.size.h=10;
+var temp;
+
+while (1):
+for temp=0;less(temp cells.size);temp=add(temp 1):
+	prevCells[temp]=cells[temp];
+endfor
+for y=0; less(y sy) ; y=add(y 1):
+	for x=0; less(x sx) ; x=add(x 1):		
+		cells[arrIdx(x y sx sy)]=setCell(x y sx sy);
+		setColor(cells[arrIdx(x y sx sy)]);
+		rectangle.origin.x=mul(rectangle.size.w x);
+		rectangle.origin.y=mul(rectangle.size.h y);
+		drawRect(rectangle);
+	endfor
+endfor
+endwhile
+fun: randCell():number
+	var des :number;
+	var res :number;
+	des=mod(rand() 2);
+	if more(des 1):
+		return alive;					
+	else
+		return dead;
+	endif
+end
+fun: setCell(x y sx sy :number):number
+	var count=0;
+	if eq(prevCells[arrIdx(sub(x 1) y sx sy)] alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(prevCells[arrIdx(add(x 1) y sx sy)] alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(prevCells[arrIdx(x sub(y 1) sx sy)] alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(prevCells[arrIdx(x add(y 1) sx sy)] alive):
+		count=add(count 1);
+	else
+	endif
+
+
+	if eq(prevCells[arrIdx(sub(x 1) sub(y 1) sx sy)] alive):
+		count=add(count 1);
+	endif
+	if eq(prevCells[arrIdx(add(x 1) add(y 1) sx sy)] alive):
+		count=add(count 1);
+	endif
+	if eq(prevCells[arrIdx(sub(x 1) add(y 1) sx sy)] alive):
+		count=add(count 1);
+	endif
+	if eq(prevCells[arrIdx(add(x 1) sub(y 1) sx sy)] alive):
+		count=add(count 1);
+	endif
+
+	if eq(prevCells[arrIdx(x y sx sy)] dead):		
+		if eq(count 3):
+			return alive;
+		else			
+			return dead;
+		endif
+	else
+		if eq(count 2):
+			return alive;
+		else
+			if eq(count 3):
+				return alive;			
+			else
+				return dead;
+		endif
+		return dead;
+	endif	
+end
+
+fun: arrIdx(x y sx sy :number) :number
+	if moreeq(x sx):
+		x=mod(x sx);
+	else
+	endif
+	if moreeq(y sy):
+		y=mod(y sy);
+	else
+	endif
+	if less(x 0):
+		x=sub(sx 1);
+	else
+	endif
+	if less(y 0):
+		y=sub(sy 1);
+	else
+	endif		
+	return add(x mul(y sx));
+end
+fun: color(r g b :number) :number	# convert r g b color to VEGA color
+	return add(b add(mul(g 256) mul(r 65536)));
+end
+fun: srand(r :number) # setup randu pseudorandom number generator
+	gvar __RAND :number
+	__RAND=r;
+end
+fun: rand() :number	# return randu pseudorandom number
+	__RAND=mod(mul(65539 __RAND) 2147483648);
+	return div(__RAND 2147483.648);
+end
+fun: mod(a b :number) :number # Modulo operation
+	return sub(a mul(floor(div(a b)) b));
+end
+

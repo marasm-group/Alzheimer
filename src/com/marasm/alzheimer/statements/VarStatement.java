@@ -99,11 +99,13 @@ public class VarStatement extends Statement
         //res.addAll(varsize.type.allocate(varsize.nameWithoutIndex(),global));
         //Alzheimer.variables.add(varsize.name,varsize);
         String arraySize=var.arraySize();
-        String alz="var "+varsizename+" "+varAccessName+" :number ;\n" +
+        String varSt="var";
+        if(global){varSt="gvar";}
+        String alz=varSt+" "+varsizename+" "+varAccessName+" :number ;\n" +
                 ""+varsizename+"=( "+ var.arraySize()+" );\n";
         if(var.arraySize().length()<=0)
         {
-            alz="var "+varsizename+" "+varAccessName+" :number ;\n" +
+            alz=varSt+" "+varsizename+" "+varAccessName+" :number ;\n" +
                     ""+varsizename+"=(  );\n";
         }
         res.addAll(Alzheimer.compile(alz));

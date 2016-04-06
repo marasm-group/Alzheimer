@@ -30,7 +30,7 @@ public class ForStatement extends Statement
         tk.line=whileStatementTokens.get(0).line;
         whileStatementTokens.add(tk);
         i+=whileStatementTokens.size();
-        ArrayList<Token> afterEachTokens = readBefore(_tokens,";",i);
+        ArrayList<Token> afterEachTokens = readBefore(_tokens,":",i);
         i+=afterEachTokens.size();
         if(prepareStatementTokens.get(0).value.equals("var"))
         {
