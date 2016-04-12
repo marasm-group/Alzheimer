@@ -42,7 +42,6 @@ for y=0; less(y sy) ; y=add(y 1):
 		store(add(arrIdx(x y sx sy) cells) setCell(x y sx sy));		
 	endfor
 endfor
-log drawImage
 drawImage(0 0 sub(cells 2));
 endwhile
 fun: randCell():number
