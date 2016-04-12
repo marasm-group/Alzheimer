@@ -23,8 +23,8 @@ for y=0; less(y sy) ; y=add(y 1):
 endfor
 
 var rectangle :Rect ;# create and setup rectangle
-rectangle.size.w=10;
-rectangle.size.h=10;
+rectangle.size.w=2;
+rectangle.size.h=2;
 var temp;
 
 while (1):
