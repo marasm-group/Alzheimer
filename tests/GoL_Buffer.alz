@@ -1,0 +1,144 @@
+##############################################
+##          Conway's Game of Life           ##
+##############################################
+# This version uses RAM to store cells arrays
+# It's recommended to disable stack guard
+# because the performance is REALLY poor 
+import "conio" "VEGA";
+putstr("Game of Life (some sort of)");
+var sx sy; # field size
+sx=128; #####  128 x 128 (feel free to change)
+sy=128; #####
+srand(1);  # random seed (feel free to change)
+##############################################
+gvar cells :number;
+gvar prevCells :number;
+var x y :number;
+gvar alive dead :number;
+cells=2;
+store(0 sx);
+store(1 sy);
+prevCells=mul(sx sy);
+store(prevCells sx);
+store(add(prevCells 1) sy);
+prevCells=add(prevCells 2);
+alive=color(255 255 255);
+dead=color(0 0 0);
+for y=0; less(y sy) ; y=add(y 1):
+	for x=0; less(x sx) ; x=add(x 1):
+		store(add(arrIdx(x y sx sy) cells) randCell());
+	endfor
+endfor
+
+var temp;
+var totalSize;
+totalSize=mul(sx sy);
+while (1):
+for temp=0;less(temp totalSize);temp=add(temp 1):
+	store(add(prevCells temp) load(add(cells temp)));	
+endfor
+for y=0; less(y sy) ; y=add(y 1):
+	for x=0; less(x sx) ; x=add(x 1):				
+		store(add(arrIdx(x y sx sy) cells) setCell(x y sx sy));		
+	endfor
+endfor
+log drawImage
+drawImage(0 0 sub(cells 2));
+endwhile
+fun: randCell():number
+	var des :number;
+	var res :number;
+	des=mod(rand() 2);
+	if more(des 1):
+		return alive;					
+	else
+		return dead;
+	endif
+end
+fun: setCell(x y sx sy :number):number
+	var count=0;
+
+	if eq(load(add(prevCells arrIdx(sub(x 1) y sx sy))) alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(load(add(prevCells arrIdx(add(x 1) y sx sy))) alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(load(add(prevCells arrIdx(x sub(y 1) sx sy))) alive):
+		count=add(count 1);
+	else
+	endif
+	if eq(load(add(prevCells arrIdx(x add(y 1) sx sy))) alive):
+		count=add(count 1);
+	else
+	endif
+
+
+	if eq(load(add(prevCells arrIdx(sub(x 1) sub(y 1) sx sy))) alive):
+		count=add(count 1);
+	endif
+	if eq(load(add(prevCells arrIdx(add(x 1) add(y 1) sx sy))) alive):
+		count=add(count 1);
+	endif
+	if eq(load(add(prevCells arrIdx(sub(x 1) add(y 1) sx sy))) alive):
+		count=add(count 1);
+	endif
+	if eq(load(add(prevCells arrIdx(add(x 1) sub(y 1) sx sy))) alive):
+		count=add(count 1);
+	endif
+
+	if eq(load(add(prevCells arrIdx(x y sx sy))) dead):		
+		if eq(count 3):
+			return alive;
+		else			
+			return dead;
+		endif
+	else
+		if eq(count 2):
+			return alive;
+		else
+			if eq(count 3):
+				return alive;			
+			else
+				return dead;
+		endif
+		return dead;
+	endif	
+end
+
+fun: arrIdx(x y sx sy :number) :number
+	if moreeq(x sx):
+		x=mod(x sx);
+	else
+	endif
+	if moreeq(y sy):
+		y=mod(y sy);
+	else
+	endif
+	if less(x 0):
+		x=sub(sx 1);
+	else
+	endif
+	if less(y 0):
+		y=sub(sy 1);
+	else
+	endif		
+	return add(x mul(y sx));
+end
+fun: color(r g b :number) :number	# convert r g b color to VEGA color
+	return add(b add(mul(g 256) mul(r 65536)));
+end
+fun: srand(r :number) # setup randu pseudorandom number generator
+	gvar __RAND :number
+	__RAND=r;
+end
+fun: rand() :number	# return randu pseudorandom number
+	__RAND=mod(mul(65539 __RAND) 2147483648);
+	return div(__RAND 2147483.648);
+end
+fun: mod(a b :number) :number # Modulo operation
+	return sub(a mul(floor(div(a b)) b));
+end
+

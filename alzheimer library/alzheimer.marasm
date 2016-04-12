@@ -86,5 +86,19 @@ ret
 @__ALZ_neq_ret_true
 push True
 ret
+$load
+var addr
+var data
+pop addr
+load data addr
+push data
+ret
+$store
+var addr
+var data
+pop data
+pop addr
+store addr data
+ret
 halt -1 ;
 halt 0 ; end of code generation
