@@ -1,5 +1,5 @@
 # Alzheimer
-A high-level language for [mvm](https://github.com/marasm-group/mvm)
+A high-level language for [mvm](https://github.com/marasm-group/mvm) [![Build Status](https://travis-ci.org/marasm-group/Alzheimer.svg?branch=master)](https://travis-ci.org/marasm-group/Alzheimer)  [![Issue Count](https://codeclimate.com/github/marasm-group/Alzheimer/badges/issue_count.svg)](https://codeclimate.com/github/marasm-group/Alzheimer)
 ![Logo](https://raw.githubusercontent.com/marasm-group/Alzheimer/master/logo.png)
 
 ## Installation ##
