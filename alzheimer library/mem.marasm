@@ -1,0 +1,31 @@
+;;
+;; mem -- memory management module
+;;
+#json
+{
+"author":"SR3u",
+"dependencies":["devCTRL"],
+"init":"$mem_init"
+}
+#end
+$mem_init
+gvar mem_CTRL      ; control port
+gvar mem_AllocInfo ; allocation info port
+gvar mem_Alloc     ; allocation port
+gvar mem_Free      ; deallocation port
+mov mem_CTRL 1         ;;
+mov mem_AllocInfo 1.1  ;;
+mov mem_Alloc 1.2      ;;
+mov mem_Free 1.3       ;;
+ret
+$alloc
+var size
+pop size
+out mem_Alloc size
+in size mem_Alloc
+push size
+ret
+$free
+var addr
+out mem_Free addr
+ret
