@@ -1,0 +1,26 @@
+##############################################
+##          Simple PI calculation           ##
+##############################################
+# Calculating PI using formula PI/4 = 1/1-1/3+1/5-1/7+1/9-.....+1/n-1/(n+2)
+import "conio";
+
+var k
+k = 24
+k = div(k 3)
+asm: print k; end
+
+putstr("Calculating PI");
+var i pi;
+for i = 1; <(i 1000); i = +(i 2):
+    putstr(".");
+    if =(mod(i 2) 0):
+        pi = +(pi /(i 1));
+    else
+        pi = -(pi /(i 1));
+    endif
+endfor
+asm: print pi; end
+pi = *(-4 pi);
+putstr("PI = ");
+asm: print pi; end
+putstr("\n");

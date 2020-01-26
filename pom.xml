@@ -12,7 +12,6 @@
   <url>https://github.com/marasm-group</url>
   <build>
     <finalName>Alzheimer</finalName>
-    <sourceDirectory>src/com/marasm</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -55,6 +54,11 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20141113</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>28.2-jre</version>
     </dependency>
   </dependencies>
 </project>

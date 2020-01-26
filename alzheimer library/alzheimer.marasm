@@ -100,5 +100,14 @@ pop data
 pop addr
 store addr data
 ret
+$mod
+var __ALZ_A
+var __ALZ_B
+pop __ALZ_B
+pop __ALZ_A
+div __ALZ_A __ALZ_A __ALZ_B
+floor __ALZ_A __ALZ_A
+push __ALZ_A
+ret
 halt -1 ;
 halt 0 ; end of code generation
